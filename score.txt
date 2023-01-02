@@ -1,0 +1,10 @@
+pororon=11
+kiki=10
+
+pororon_good=a
+pororon_bad=a
+
+kiki_good=d
+kiki_bad=a
+
+LUCKY_FOOD=none

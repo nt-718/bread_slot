@@ -1,0 +1,3 @@
+HISTORY
+1回目
+pororon, try: 100回, point: 2, total: 11
