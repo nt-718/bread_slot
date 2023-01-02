@@ -181,25 +181,31 @@ else
 	echo "" >> ./all_pair_history.txt
 	echo "HISTORY" > ./slot_history.txt
 	num=1
-	echo "$1のあたりとはずれを選択してください。"
+	echo "$1はあたりとはずれを選択してください。"
 	read -p ">> " pororon_good pororon_bad
 	echo "" >> ./score.txt
 	echo
 	echo "$1_good=$pororon_good" >> ./score.txt
 	echo "$1_bad=$pororon_bad" >> ./score.txt
-	echo "$2のあたりとはずれを選択してください。"
+	echo "$2はあたりとはずれを選択してください。"
 	read -p ">> " kiki_good kiki_bad
 	echo "" >> ./score.txt
 	echo
 	echo "$2_good=$kiki_good" >> ./score.txt
 	echo "$2_bad=$kiki_bad" >> ./score.txt
 	echo >> ./score.txt
-	echo "LUCKY_FOOD=none" >> ./score.txt
+	echo "LUCKY_FOOD=" >> ./score.txt
+	
+	echo "original_array=(${original_array[@]})" > ./array.txt
+	echo "array=(${array[@]})" >> ./array.txt
+	echo "flag=true" >> ./array.txt
+	echo "fever=" >> ./array.txt
 
 fi
 
 
-echo "$playerの番です。"
+echo -e "\e[35m$playerの番です!\e[m"
+
 read -p "何コイン支払いますか? " howmanytimes
 
 while [[ $howmanytimes != ":q" ]];
@@ -214,7 +220,8 @@ do
 	count_minus=0
 
 	if [[ -z $howmanytimes ]]; then
-		read -p "何コイン支払いますか? " howmanytimes
+		# read -p "何コイン支払いますか? " howmanytimes
+		howmanytimes=1
 	fi
 
 	p=$(( $(($p + 1)) % 2 ))
@@ -249,9 +256,9 @@ do
 
 	if [[ $rand_flag == "true" ]]; then
 		echo 
-		echo "ボーナスタイムです!!"
-		echo "0 ~ 9がランダムで加算されます。"
-		read -p "$playerさんEnterを押してください。"
+		echo -e "\e[34mボーナスタイムです!!\e[m"
+		echo -e "\e[34m0 ~ 9がランダムで加算されます!\e[m"
+		read -p "$playerさんEnterを押してルーレットを回しください。"
 
 		aaaa='\r👉'
 
@@ -301,8 +308,8 @@ do
 		elif [[ $((RANDOM%+101)) -gt 80 ]]; then
 			fever_flag="true"
 			echo 
-			echo "フィーバータイムです!!"
-			echo "通常のポイント+1されます。"
+			echo -e "\e[34mフィーバータイムです!!\e[m"
+			echo -e "\e[34m通常のポイント+1されます!!\e[m"
 		fi
 
 		if [[ $((RANDOM%+101)) -gt 80 ]]; then
@@ -314,7 +321,16 @@ do
 	echo "$pointポイント"
 
 	echo 
-	echo "次は$playerの番です。"
+	if [[ $fever_flag == true ]]; then
+		echo -e "\e[34mフィーバー中です!!\e[m"
+	fi
+
+	if [[ "$player" == "$1" ]]; then
+		echo -e "\e[35m次は$playerの番です!\e[m"
+	else
+		echo -e "\e[36m次は$playerの番です!\e[m"
+	fi
+	
 	read -p "何コイン支払いますか? " howmanytimes
 
 done

@@ -42,6 +42,9 @@ add_food() {
 		echo "array=(${array_to_add[@]})" >> ./array.txt
 		echo "flag=false" >> ./array.txt
 		echo "fever=$add" >> ./array.txt
+		echo
+		echo "🎉$addが出やすくなりました🎉"
+
 	fi
 		
 	if [[ $flag == false ]]; then
@@ -50,5 +53,4 @@ add_food() {
 		echo "flag=true" >> ./array.txt
 		echo "fever=$fever" >> ./array.txt
 	fi
-	echo "$addが出やすくなりました。"
 }
