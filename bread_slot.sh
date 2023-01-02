@@ -4,10 +4,14 @@
 shopt -s extglob lastpipe
 source ./array.txt
 source ./score.txt
+source ./pair_count.sh
+
 x=1
+fever_flag="false"
+rand_flag="false"
+array=(`echo "${original_array[@]} ${original_array[@]} ${original_array[@]} 🐵"`)
 
 # =================================================
-
 
 # hello
 hello() {
@@ -77,9 +81,13 @@ count_point() {
 
 	check_hello=$1
 
+	count_plus=$(($count_plus + 1))
+
+	if [[ "$fever_flag" == "true" ]]; then
+		count_plus=$(($count_plus + 1))
+	fi
+
 	if [[ "$successive_flag" == "true" ]]; then
-		count_plus=$(($count_plus + 2))
-	else
 		count_plus=$(($count_plus + 1))
 	fi
 
@@ -89,6 +97,10 @@ count_point() {
 
 	if [[ "$check_hello" == "🍅 🍅 🍅" ]]; then
 		count_minus=$(($count_minus + 4))
+	fi
+
+	if [[ "$check_hello" == "🐵 🐵 🐵" ]]; then
+		count_minus=$(($count_minus + 11))
 	fi
 
 	if [[ $(($num % 10)) == 0 ]] && [[ $(($num % 15)) != 0 ]]; then
@@ -202,7 +214,7 @@ do
 	count_minus=0
 
 	if [[ -z $howmanytimes ]]; then
-		howmanytimes=1
+		read -p "何コイン支払いますか? " howmanytimes
 	fi
 
 	p=$(( $(($p + 1)) % 2 ))
@@ -235,9 +247,27 @@ do
 	
 	point=$(($count_plus - $count_minus))
 
+	if [[ $rand_flag == "true" ]]; then
+		echo 
+		echo "ボーナスタイムです!!"
+		echo "0 ~ 9がランダムで加算されます。"
+		read -p "$playerさんEnterを押してください。"
+
+		aaaa='\r👉'
+
+		for y in {1..50}
+		do
+			int=$((RANDOM%+10))
+			printf "${aaaa}$int👈"
+			sleep 0.1
+		done
+		echo "$intポイント加算されました。🎉🎉"
+		point=$(($point + $int))
+	fi
+
 	if [[ $p == 0 ]]; then
 		new_playerB_point=$kiki
-		new_playerA_point=$(( $pororon + $count_plus - $count_minus ))
+		new_playerA_point=$(( $pororon + $point ))
 
 		make_score_file "$1" "$2" "$new_playerA_point" "$new_playerB_point"
 		
@@ -247,18 +277,41 @@ do
 		player=$2
 
 	elif [[ $p == 1 ]]; then 
-		new_playerB_point=$(( $kiki + $count_plus - $count_minus ))
+		new_playerB_point=$(( $kiki + $point ))
 		new_playerA_point=$pororon
 	
 		make_score_file "$1" "$2" "$new_playerA_point" "$new_playerB_point"
 		echo "$player, try: $howmanytimes回, point: $point, total: $new_playerB_point" >> ./slot_history.txt
 		echo "" >> ./slot_history.txt
 		x=$(($x + 1))
+		rand_flag="false"
 		player=$1
+		
+		if [[ $((RANDOM%+101)) -gt 80 ]]; then
+			rand_flag="true"
+		fi
+		
+		if [[ $fever_flag == true ]]; then
+			if [[ $((RANDOM%+101)) -gt 70 ]]; then
+				fever_flag="false"
+				echo 
+				echo "フィーバータイム終了です!!"
+			fi
+
+		elif [[ $((RANDOM%+101)) -gt 80 ]]; then
+			fever_flag="true"
+			echo 
+			echo "フィーバータイムです!!"
+			echo "通常のポイント+1されます。"
+		fi
+
+		if [[ $((RANDOM%+101)) -gt 80 ]]; then
+			add_food
+		fi
+
 	fi
 	echo
 	echo "$pointポイント"
-
 
 	echo 
 	echo "次は$playerの番です。"
