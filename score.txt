@@ -1,10 +1,10 @@
-pororon=11
-kiki=10
+pororon=15
+kiki=7
 
-pororon_good=a
-pororon_bad=a
+pororon_good=🍞
+pororon_bad=☕
 
-kiki_good=d
-kiki_bad=a
+kiki_good=🥖
+kiki_bad=🍺
 
 LUCKY_FOOD=none

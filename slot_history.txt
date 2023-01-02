@@ -1,3 +1,19 @@
 HISTORY
 1回目
 pororon, try: 100回, point: 2, total: 11
+kiki, try: 100回, point: 0, total: 9
+
+2回目
+pororon, try: 100回, point: 0, total: 10
+kiki, try: 100回, point: 0, total: 8
+
+3回目
+pororon, try: 100回, point: 8, total: 17
+kiki, try: 100回, point: 0, total: 7
+
+4回目
+pororon, try: 100回, point: 0, total: 16
+kiki, try: 100回, point: 1, total: 7
+
+5回目
+pororon, try: 100回, point: 0, total: 15
