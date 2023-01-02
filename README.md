@@ -1,5 +1,10 @@
 # bread_slot
 
+Windows Terminal画面分割
+→縦横比の大きい方が分割される
+shift+alt+矢印で調整する
+wt.exe -w 0 split-pane -p "ubuntu" ubuntu.exe
+
 履歴を表示
 watch -t -n 1 cat all_
 pair_history.txt
