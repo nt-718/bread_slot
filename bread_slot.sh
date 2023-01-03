@@ -106,9 +106,11 @@ count_point() {
 
 	if [[ "$check_hello" == "🐵 🐵 🐵" ]]; then
 		count_minus=$(($count_minus + 11))
+		echo
 		for monkey in `seq 1 ${LINES}`
 		do
 			echo -e "\e[35m🐵 🐵 🐵 🐵 🐵 🐵 🐵 🐵 🐵 🐵\e[m"
+			sleep 0.1
 		done
 	fi
 
