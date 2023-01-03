@@ -5,6 +5,7 @@ shopt -s extglob lastpipe
 source ./array.txt
 source ./score.txt
 source ./pair_count.sh
+source ./selector.sh
 
 x=1
 fever_flag="false"
@@ -70,7 +71,7 @@ change_bonus() {
         		
 		lucky_item=${array[$(($RANDOM % ${#array[*]}))]}
 		echo "LUCKY_FOOD="$lucky_item"" >> ./score.txt
-		echo "✨LUCKY ITEM CHANGED!!✨"
+		echo "✨ラッキーアイテムが変わりました!!✨"
 	fi
 
 	change_bonus_flag="false"
@@ -121,18 +122,18 @@ count_point() {
 			echo
 			echo -e "\e[35m残念、$num個目アンラッキー!\e[m"
 			echo
+		fi
 
+		first_check=`grep "$check_hello" all_pair_history.txt`
+
+		if [[ "$first_check" == "" ]]; then
+			count_plus=$(($count_plus + 1))
+			echo
+			echo "FIRST TIME🎉 $check_hello 🎉"
+			echo
 		fi
 	fi
 
-	first_check=`grep "$check_hello" all_pair_history.txt`
-
-	if [[ "$first_check" == "" ]]; then
-		count_plus=$(($count_plus + 1))
-		echo
-		echo "FIRST TIME🎉 $check_hello 🎉"
-		echo
-	fi
 
 	if [[ "$player" == "pororon" ]]; then
 		if [[ "$pororon_good $pororon_good $pororon_good" == "$check_hello" ]]; then
@@ -235,8 +236,15 @@ else
 	echo "" >> ./all_pair_history.txt
 	echo "HISTORY" > ./slot_history.txt
 	num=1
-	echo "$1はあたりとはずれを選択してください。"
-	read -p ">> " pororon_good pororon_bad
+	echo "$1は好きなものを選択してください。"
+	echo_value "food_array"
+	source ./selector.sh
+	pororon_good="$selected_value"
+	echo "$1は苦手なものを選択してください。"
+	echo_value "food_array"
+	source ./selector.sh
+	pororon_bad="$selected_value"
+
 	[[ $pororon_good == "" ]] && pororon_good=${original_array[$(($RANDOM % ${#original_array[*]}))]}
 	[[ $pororon_bad == "" ]] && pororon_bad=${original_array[$(($RANDOM % ${#original_array[*]}))]}
 	
@@ -257,8 +265,15 @@ else
 	echo "$1_good=$pororon_good" >> ./score.txt
 	echo "$1_bad=$pororon_bad" >> ./score.txt
 
-	echo "$2はあたりとはずれを選択してください。"
-	read -p ">> " kiki_good kiki_bad
+	echo "$2は好きなものを選択してください。"
+	echo_value "food_array"
+	source ./selector.sh
+	kiki_good="$selected_value"
+	echo "$2は苦手なものを選択してください。"
+	echo_value "food_array"
+	source ./selector.sh
+	kiki_bad="$selected_value"
+	
 	[[ $kiki_good == "" ]] && kiki_good=${original_array[$(($RANDOM % ${#original_array[*]}))]}
 	[[ $kiki_bad == "" ]] && kiki_bad=${original_array[$(($RANDOM % ${#original_array[*]}))]}
 	
@@ -341,7 +356,7 @@ do
 	
 	point=$(($count_plus - $count_minus))
 
-	if [[ $rand_flag == "true" ]]; then
+	if [[ "$rand_flag" == "true" ]]; then
 		point_add_roulette
 	fi
 

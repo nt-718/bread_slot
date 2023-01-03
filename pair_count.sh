@@ -43,7 +43,8 @@ add_food() {
 		echo "flag=false" >> ./array.txt
 		echo "fever=$add" >> ./array.txt
 		echo
-		echo "🎉$addが出やすくなりました🎉"
+		echo -e "\e[34m$addは今が旬!!\e[m"
+		echo -e "\e[34m🎉$addが出やすくなりました🎉\e[m"
 
 	fi
 		
