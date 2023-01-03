@@ -101,21 +101,34 @@ count_point() {
 
 	if [[ "$check_hello" == "🐵 🐵 🐵" ]]; then
 		count_minus=$(($count_minus + 11))
+		for monkey in `seq 1 ${LINES}`
+		do
+			echo -e "\e[35m🐵 🐵 🐵 🐵 🐵 🐵 🐵 🐵 🐵 🐵\e[m"
+		done
 	fi
 
 	if [[ $(($num % 10)) == 0 ]] && [[ $(($num % 15)) != 0 ]]; then
 		count_plus=$(($count_plus + 5))
+		echo
+		echo -e "\e[35m$num個目ボーナス!\e[m"
+		echo
 	fi
 
 	if [[ $(($num % 15)) == 0 ]]; then
 		count_minus=$(($count_minus + 6))
+		echo
+		echo -e "\e[35m残念、$num個目アンラッキー!\e[m"
+		echo
+
 	fi
 
 	first_check=`grep "$check_hello" all_pair_history.txt`
 
 	if [[ "$first_check" == "" ]]; then
 		count_plus=$(($count_plus + 1))
-		echo "FIRST TIME🎉"
+		echo
+		echo "FIRST TIME🎉 $check_hello 🎉"
+		echo
 	fi
 
 	if [[ "$player" == "pororon" ]]; then
@@ -158,6 +171,42 @@ make_score_file() {
 
 # =================================================
 
+lucky_roulette() {
+	bbbb='\r👉'
+	echo 
+	echo -e "\e[34mラッキールーレット!!\e[m"
+	read -p "$playerさんEnterを押してルーレットを回しください。"
+	
+	for y in {1..50}
+	do
+		lucky_item=${array[$(($RANDOM % ${#array[*]}))]}
+		printf "${bbbb}$lucky_item $lucky_item $lucky_item👈"
+		sleep 0.1
+	done
+
+	res="$lucky_item $lucky_item $lucky_item"
+	count_point "$res"
+}
+
+
+point_add_roulette() {
+	echo 
+	echo -e "\e[34mボーナスタイムです!!\e[m"
+	echo -e "\e[34m0 ~ 9がランダムで加算されます!\e[m"
+	read -p "$playerさんEnterを押してルーレットを回しください。"
+
+	aaaa='\r👉'
+
+	for y in {1..50}
+	do
+		int=$((RANDOM%+10))
+		printf "${aaaa}$int👈"
+		sleep 0.1
+	done
+	echo "$intポイント加算されました。🎉🎉"
+	point=$(($point + $int))
+
+}
 # main
 
 player=$1
@@ -247,29 +296,19 @@ do
 	for i in `seq 1 $howmanytimes`;
 	do
 		hello
-		sleep 0.05
+		sleep 0.07
 	done
 
 	source ./score.txt
+
+	if [[ $((RANDOM%+101)) -gt 90 ]]; then
+		lucky_roulette
+	fi
 	
 	point=$(($count_plus - $count_minus))
 
 	if [[ $rand_flag == "true" ]]; then
-		echo 
-		echo -e "\e[34mボーナスタイムです!!\e[m"
-		echo -e "\e[34m0 ~ 9がランダムで加算されます!\e[m"
-		read -p "$playerさんEnterを押してルーレットを回しください。"
-
-		aaaa='\r👉'
-
-		for y in {1..50}
-		do
-			int=$((RANDOM%+10))
-			printf "${aaaa}$int👈"
-			sleep 0.1
-		done
-		echo "$intポイント加算されました。🎉🎉"
-		point=$(($point + $int))
+		point_add_roulette
 	fi
 
 	if [[ $p == 0 ]]; then
@@ -302,7 +341,7 @@ do
 			if [[ $((RANDOM%+101)) -gt 70 ]]; then
 				fever_flag="false"
 				echo 
-				echo "フィーバータイム終了です!!"
+				echo -e "\e[34mフィーバータイム終了です!!\e[m"
 			fi
 
 		elif [[ $((RANDOM%+101)) -gt 80 ]]; then
