@@ -214,9 +214,11 @@ p=1
 
 read -p "リセットしますか？ y/N: " reset
 
-if [ $reset == "N" -o $reset == "n" ]; then
-	read -p "カウントを入力してください。" num
+if [ "$reset" == "N" -o "$reset" == "n" ]; then
+	read -p "ヒストリーカウントを入力してください。" num
+	read -p "ゲーム数を入力してください。" x
 	num=$(($num + 1))
+	x=$(($x + 1))
 	pororon_good=$pororon_good
 	pororon_bad=$pororon_bad
 	kiki_good=$kiki_good
@@ -232,12 +234,17 @@ else
 	num=1
 	echo "$1はあたりとはずれを選択してください。"
 	read -p ">> " pororon_good pororon_bad
+	[[ $pororon_good == "" ]] && pororon_good=${array[$(($RANDOM % ${#array[*]}))]}
+	[[ $pororon_bad == "" ]] && pororon_bad=${array[$(($RANDOM % ${#array[*]}))]}
 	echo "" >> ./score.txt
 	echo
 	echo "$1_good=$pororon_good" >> ./score.txt
 	echo "$1_bad=$pororon_bad" >> ./score.txt
+
 	echo "$2はあたりとはずれを選択してください。"
 	read -p ">> " kiki_good kiki_bad
+	[[ $kiki_good == "" ]] && kiki_good=${array[$(($RANDOM % ${#array[*]}))]}
+	[[ $kiki_bad == "" ]] && kiki_bad=${array[$(($RANDOM % ${#array[*]}))]}
 	echo "" >> ./score.txt
 	echo
 	echo "$2_good=$kiki_good" >> ./score.txt
