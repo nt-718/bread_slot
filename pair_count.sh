@@ -29,29 +29,17 @@ rank(){
 	done
 }
 
-
 add_food() {
 
 	add=`echo "${array[$(($RANDOM % ${#array[*]}))]}"`
+	
+	echo "original_array=(${original_array[@]})" > ./array.txt
+	array_to_add=(${original_array[@]} ${original_array[@]} ${original_array[@]} 🐵)
+	array_to_add+=("$add")
+	echo "array=(${array_to_add[@]})" >> ./array.txt
+	echo "fever=$add" >> ./array.txt
+	echo
+	echo -e "\e[34m$addは今が旬!!\e[m"
+	echo -e "\e[34m🎉$addが出やすくなりました🎉\e[m"
 
-
-	if [[ $flag == true ]]; then
-		echo "original_array=(${original_array[@]})" > ./array.txt
-		array_to_add=(${original_array[@]} ${original_array[@]} ${original_array[@]} 🐵)
-		array_to_add+=("$add")
-		echo "array=(${array_to_add[@]})" >> ./array.txt
-		echo "flag=false" >> ./array.txt
-		echo "fever=$add" >> ./array.txt
-		echo
-		echo -e "\e[34m$addは今が旬!!\e[m"
-		echo -e "\e[34m🎉$addが出やすくなりました🎉\e[m"
-
-	fi
-		
-	if [[ $flag == false ]]; then
-		echo "original_array=(${original_array[@]})" > ./array.txt
-		echo "array=(${array[@]})" >> ./array.txt
-		echo "flag=true" >> ./array.txt
-		echo "fever=$fever" >> ./array.txt
-	fi
 }

@@ -9,10 +9,8 @@ source ./selector.sh
 
 x=1
 fever_flag="false"
-rand_flag="false"
+tomato_fes_flag="false"
 random_test="true"
-array=(`echo "${original_array[@]} ${original_array[@]} ${original_array[@]} 🐵"`)
-
 # =================================================
 
 # hello
@@ -25,9 +23,11 @@ hello() {
 	first_value=`echo "$HELLO" | awk '{print $1}'`
 	second_value=`echo "$HELLO" | awk '{print $2}'`
 	third_value=`echo "$HELLO" | awk '{print $3}'`
-	
 
 	if [[ "$prev_pair" == "$HELLO" ]]; then
+		if [[ "$tomato_fes_flag" == true ]]; then
+			HELLO="🍅 🍅 🍅"
+		fi
 		echo -e "\e[31m$slot_count: $HELLO Too much... 🤢 🤢 🤢\e[m"
 		successive_flag="true"
 		count_point "$HELLO"
@@ -41,6 +41,9 @@ hello() {
 		
 	elif [ "$first_value" == "$second_value" -a "$first_value" == "$third_value" ]; then
 
+		if [[ "$tomato_fes_flag" == true ]]; then
+			HELLO="🍅 🍅 🍅"
+		fi
 		echo -e "\e[33m$slot_count: $HELLO Delisious! 😋 😋 😋\e[m"
 		count_point "$HELLO"
 		if [[ $(($num % 10)) == 0 ]]; then
@@ -110,14 +113,14 @@ count_point() {
 	fi
 
 	if [[ "$2" != "roulette" ]]; then
-		if [[ $(($num % 10)) == 0 ]] && [[ $(($num % 15)) != 0 ]]; then
+		if [[ $(($num % 10)) == 0 ]]; then
 			count_plus=$(($count_plus + 5))
 			echo
 			echo -e "\e[35m$num個目ボーナス!\e[m"
 			echo
 		fi
 
-		if [[ $(($num % 15)) == 0 ]]; then
+		if [[ $(($num % 10)) == 1 ]] && [[ $num != 1 ]]; then
 			count_minus=$(($count_minus + 6))
 			echo
 			echo -e "\e[35m残念、$num個目アンラッキー!\e[m"
@@ -175,42 +178,57 @@ make_score_file() {
 
 # =================================================
 
+
+# unlucky_roulette
+
 lucky_roulette() {
-	bbbb='\r👉'
+	
 	echo 
 	echo -e "\e[34mラッキールーレット!!\e[m"
-	read -p "$playerさんEnterを押してルーレットを回しください。"
+	read -p "$playerさんはEnterを押してルーレットを回しください。"
 	
+	aaaa='\r👉'	
 	for y in {1..50}
 	do
 		lucky_item=${array[$(($RANDOM % ${#array[*]}))]}
-		printf "${bbbb}$lucky_item $lucky_item $lucky_item👈"
+		printf "${aaaa}$lucky_item $lucky_item $lucky_item👈"
 		sleep 0.1
 	done
 
 	res="$lucky_item $lucky_item $lucky_item"
 	count_point "$res" "roulette"
+	echo
+	
 }
 
+# ==================================================
 
-point_add_roulette() {
+# unlucky_roulette
+
+unlucky_roulette() {
 	echo 
-	echo -e "\e[34mボーナスタイムです!!\e[m"
-	echo -e "\e[34m0 ~ 9がランダムで加算されます!\e[m"
-	read -p "$playerさんEnterを押してルーレットを回しください。"
+	echo -e "\e[31mアンラッキールーレット👿\e[m"
+	read -p "$playerさんはEnterを押してルーレットを回しください。"
+    bad_array=("🍅" "🐵" "$pororon_bad" "$kiki_bad")
+	bbbb='\r👉'
 
-	aaaa='\r👉'
+	
 
 	for y in {1..50}
 	do
-		int=$((RANDOM%+10))
-		printf "${aaaa}$int👈"
+		unlucky_item=${bad_array[$(($RANDOM % ${#bad_array[*]}))]}
+		printf "${bbbb}$unlucky_item $unlucky_item $unlucky_item👈"
 		sleep 0.1
 	done
-	echo "$intポイント加算されました。🎉🎉"
-	point=$(($point + $int))
+
+	res="$unlucky_item $unlucky_item $unlucky_item"
+	count_point "$res" "roulette"
+	echo
 
 }
+
+# ==================================================
+
 # main
 
 player=$1
@@ -219,10 +237,10 @@ p=1
 read -p "リセットしますか？ y/N: " reset
 
 if [ "$reset" == "N" -o "$reset" == "n" ]; then
-	read -p "ヒストリーカウントを入力してください。" num
-	read -p "ゲーム数を入力してください。" x
-	num=$(($num + 1))
+	x=`cat slot_history.txt | grep 回目 | wc -l`
+	num=`cat all_pair_history.txt | grep : | wc -l`
 	x=$(($x + 1))
+	num=$(($num + 1))
 	pororon_good=$pororon_good
 	pororon_bad=$pororon_bad
 	kiki_good=$kiki_good
@@ -236,11 +254,13 @@ else
 	echo "" >> ./all_pair_history.txt
 	echo "HISTORY" > ./slot_history.txt
 	num=1
+	clear
 	echo "$1は好きなものを選択してください。"
 	echo_value "food_array"
 	source ./selector.sh
 	pororon_good="$selected_value"
-	echo "$1は苦手なものを選択してください。"
+	clear
+	echo -e "$1は\e[31m苦手なもの\e[mを選択してください。"
 	echo_value "food_array"
 	source ./selector.sh
 	pororon_bad="$selected_value"
@@ -265,11 +285,13 @@ else
 	echo "$1_good=$pororon_good" >> ./score.txt
 	echo "$1_bad=$pororon_bad" >> ./score.txt
 
+	clear
 	echo "$2は好きなものを選択してください。"
 	echo_value "food_array"
 	source ./selector.sh
 	kiki_good="$selected_value"
-	echo "$2は苦手なものを選択してください。"
+	clear
+	echo -e "$2は\e[31m苦手なもの\e[mを選択してください。"
 	echo_value "food_array"
 	source ./selector.sh
 	kiki_bad="$selected_value"
@@ -294,9 +316,9 @@ else
 	echo >> ./score.txt
 	echo "LUCKY_FOOD=" >> ./score.txt
 	
+	array=(`echo "${original_array[@]} ${original_array[@]} ${original_array[@]} 🐵"`)
 	echo "original_array=(${original_array[@]})" > ./array.txt
 	echo "array=(${array[@]})" >> ./array.txt
-	echo "flag=true" >> ./array.txt
 	echo "fever=" >> ./array.txt
 
 fi
@@ -304,7 +326,7 @@ fi
 
 echo -e "\e[35m$playerの番です!\e[m"
 
-read -p "何コイン支払いますか? " howmanytimes
+read -p "何コイン使いますか? " howmanytimes
 
 while [[ $howmanytimes != ":q" ]];
 do
@@ -318,7 +340,10 @@ do
 	count_minus=0
 
 	if [[ -z $howmanytimes ]]; then
-		# read -p "何コイン支払いますか? " howmanytimes
+		howmanytimes=1
+ 	elif [[ "$howmanytimes" =~ ^[0-9]+$ ]]; then
+		howmanytimes=$howmanytimes
+	else
 		howmanytimes=1
 	fi
 
@@ -350,15 +375,15 @@ do
 
 	source ./score.txt
 
-	if [[ $((RANDOM%+101)) -gt 90 ]]; then
+	if [[ $((RANDOM%+101)) -gt 80 ]]; then
 		lucky_roulette
+	fi
+
+	if [[ $((RANDOM%+101)) -gt 95 ]]; then
+		unlucky_roulette
 	fi
 	
 	point=$(($count_plus - $count_minus))
-
-	if [[ "$rand_flag" == "true" ]]; then
-		point_add_roulette
-	fi
 
 	if [[ $p == 0 ]]; then
 		new_playerB_point=$kiki
@@ -378,12 +403,27 @@ do
 		make_score_file "$1" "$2" "$new_playerA_point" "$new_playerB_point"
 		echo "$player, try: $howmanytimes回, point: $point, total: $new_playerB_point" >> ./slot_history.txt
 		echo "" >> ./slot_history.txt
+
+		if [[ $(($x % 10)) == 0 ]]; then
+			echo "$x回目が終了しました。"
+		fi
+
+		if [[ $(($x % 5)) == 0 ]]; then
+			add_food
+		fi
+
 		x=$(($x + 1))
-		rand_flag="false"
 		player=$1
 		
-		if [[ $((RANDOM%+101)) -gt 90 ]]; then
-			rand_flag="true"
+		if [[ $tomato_fes_flag == "true" ]]; then
+			tomato_fes_flag="false"
+			echo "🍅FESTIVALが終了しました。🍅"
+
+		elif [[ $((RANDOM%+101)) -gt 90 ]]; then
+			tomato_fes_flag="true"
+			echo
+			echo "🍅🍅🍅 FESTIVAL 🍅🍅🍅"
+			echo "次のターン、揃ったものはすべて🍅になります。"
 		fi
 		
 		if [[ $fever_flag == true ]]; then
@@ -393,15 +433,11 @@ do
 				echo -e "\e[34mフィーバータイム終了です!!\e[m"
 			fi
 
-		elif [[ $((RANDOM%+101)) -gt 90 ]]; then
+		elif [[ $((RANDOM%+101)) -gt 80 ]]; then
 			fever_flag="true"
 			echo 
 			echo -e "\e[34mフィーバータイムです!!\e[m"
 			echo -e "\e[34m通常のポイント+1されます!!\e[m"
-		fi
-
-		if [[ $((RANDOM%+101)) -gt 70 ]]; then
-			add_food
 		fi
 
 	fi
@@ -419,7 +455,7 @@ do
 		echo -e "\e[36m次は$playerの番です!\e[m"
 	fi
 	
-	read -p "何コイン支払いますか? " howmanytimes
+	read -p "何コイン使いますか? " howmanytimes
 
 done
 
