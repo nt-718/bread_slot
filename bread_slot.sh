@@ -9,6 +9,7 @@ source ./pair_count.sh
 x=1
 fever_flag="false"
 rand_flag="false"
+random_test="true"
 array=(`echo "${original_array[@]} ${original_array[@]} ${original_array[@]} 🐵"`)
 
 # =================================================
@@ -234,8 +235,21 @@ else
 	num=1
 	echo "$1はあたりとはずれを選択してください。"
 	read -p ">> " pororon_good pororon_bad
-	[[ $pororon_good == "" ]] && pororon_good=${array[$(($RANDOM % ${#array[*]}))]}
-	[[ $pororon_bad == "" ]] && pororon_bad=${array[$(($RANDOM % ${#array[*]}))]}
+	[[ $pororon_good == "" ]] && pororon_good=${original_array[$(($RANDOM % ${#original_array[*]}))]}
+	[[ $pororon_bad == "" ]] && pororon_bad=${original_array[$(($RANDOM % ${#original_array[*]}))]}
+	
+	while [[ $random_test == "true" ]]
+	do
+		if [[ "$pororon_bad" == "$pororon_good" ]]; then
+			pororon_bad=${original_array[$(($RANDOM % ${#original_array[*]}))]}
+		else
+			pororon_bad=$pororon_bad
+			random_test="false"
+		fi
+	done
+
+	random_test="true"
+
 	echo "" >> ./score.txt
 	echo
 	echo "$1_good=$pororon_good" >> ./score.txt
@@ -243,8 +257,19 @@ else
 
 	echo "$2はあたりとはずれを選択してください。"
 	read -p ">> " kiki_good kiki_bad
-	[[ $kiki_good == "" ]] && kiki_good=${array[$(($RANDOM % ${#array[*]}))]}
-	[[ $kiki_bad == "" ]] && kiki_bad=${array[$(($RANDOM % ${#array[*]}))]}
+	[[ $kiki_good == "" ]] && kiki_good=${original_array[$(($RANDOM % ${#original_array[*]}))]}
+	[[ $kiki_bad == "" ]] && kiki_bad=${original_array[$(($RANDOM % ${#original_array[*]}))]}
+	
+	while [[ $random_test == "true" ]]
+	do
+		if [[ "$kiki_bad" == "$kiki_good" ]]; then
+			kiki_bad=${original_array[$(($RANDOM % ${#original_array[*]}))]}
+		else
+			kiki_bad=$kiki_bad
+			random_test="false"
+		fi
+	done
+
 	echo "" >> ./score.txt
 	echo
 	echo "$2_good=$kiki_good" >> ./score.txt
@@ -340,7 +365,7 @@ do
 		rand_flag="false"
 		player=$1
 		
-		if [[ $((RANDOM%+101)) -gt 80 ]]; then
+		if [[ $((RANDOM%+101)) -gt 90 ]]; then
 			rand_flag="true"
 		fi
 		
@@ -351,7 +376,7 @@ do
 				echo -e "\e[34mフィーバータイム終了です!!\e[m"
 			fi
 
-		elif [[ $((RANDOM%+101)) -gt 80 ]]; then
+		elif [[ $((RANDOM%+101)) -gt 90 ]]; then
 			fever_flag="true"
 			echo 
 			echo -e "\e[34mフィーバータイムです!!\e[m"

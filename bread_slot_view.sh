@@ -5,7 +5,7 @@ source ./array.txt
 
 echo "INFO"
 echo "pororon $pororon 🤤$pororon_good🤤 🤢$pororon_bad🤢"
-echo "kiki $kiki     🤤$kiki_good🤤 🤢$kiki_bad🤢"
+echo "kiki    $kiki 🤤$kiki_good🤤 🤢$kiki_bad🤢"
 
 echo
 
