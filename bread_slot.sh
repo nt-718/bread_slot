@@ -108,19 +108,21 @@ count_point() {
 		done
 	fi
 
-	if [[ $(($num % 10)) == 0 ]] && [[ $(($num % 15)) != 0 ]]; then
-		count_plus=$(($count_plus + 5))
-		echo
-		echo -e "\e[35m$num個目ボーナス!\e[m"
-		echo
-	fi
+	if [[ "$2" != "roulette" ]]; then
+		if [[ $(($num % 10)) == 0 ]] && [[ $(($num % 15)) != 0 ]]; then
+			count_plus=$(($count_plus + 5))
+			echo
+			echo -e "\e[35m$num個目ボーナス!\e[m"
+			echo
+		fi
 
-	if [[ $(($num % 15)) == 0 ]]; then
-		count_minus=$(($count_minus + 6))
-		echo
-		echo -e "\e[35m残念、$num個目アンラッキー!\e[m"
-		echo
+		if [[ $(($num % 15)) == 0 ]]; then
+			count_minus=$(($count_minus + 6))
+			echo
+			echo -e "\e[35m残念、$num個目アンラッキー!\e[m"
+			echo
 
+		fi
 	fi
 
 	first_check=`grep "$check_hello" all_pair_history.txt`
@@ -186,7 +188,7 @@ lucky_roulette() {
 	done
 
 	res="$lucky_item $lucky_item $lucky_item"
-	count_point "$res"
+	count_point "$res" "roulette"
 }
 
 
@@ -383,7 +385,7 @@ do
 			echo -e "\e[34m通常のポイント+1されます!!\e[m"
 		fi
 
-		if [[ $((RANDOM%+101)) -gt 80 ]]; then
+		if [[ $((RANDOM%+101)) -gt 70 ]]; then
 			add_food
 		fi
 
