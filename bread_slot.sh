@@ -476,7 +476,7 @@ echo -e "\e[35m$playerの番です!\e[m"
 
 read -p "何コイン使いますか? " howmanytimes
 
-while [[ $howmanytimes != ":q" ]];
+while true;
 do
 	source ./score.txt
 	slot_count=1
@@ -485,7 +485,11 @@ do
 
 	count_plus=0
 	count_minus=0
-	
+
+	if [[ "$howmanytimes" == ":q" ]]; then
+		break
+	fi
+
 	if [[ "$howmanytimes" == "change" ]]; then
 
 		if [[ "$player" == "$1" ]] && [[ "$playerA_change_preference_flag" == "false" ]]; then
@@ -675,6 +679,8 @@ do
 			pororon_egg=""
 			kiki_egg=$kiki_egg
 		fi
+		egg_point_pororon=$egg_point_pororon
+
 	fi
 
 	if [[ "$player" == "kiki" ]] && [[ "$egg_count_kiki" == 4 ]]; then
@@ -702,6 +708,8 @@ do
 			kiki_egg=""
 
 		fi	
+		egg_point_kiki=$egg_point_kiki
+
 	fi
 
 	if [[ "$player" == "pororon" ]] && [[ "$egg_count_pororon" == 7 ]]; then
@@ -724,6 +732,8 @@ do
 			kiki_egg=$kiki_egg
 
 		fi	
+		egg_point_pororon=$egg_point_pororon
+
 	fi
 
 	if [[ "$player" == "kiki" ]] && [[ "$egg_count_kiki" == 7 ]]; then
@@ -746,6 +756,8 @@ do
 			kiki_egg=""
 
 		fi	
+		egg_point_kiki=$egg_point_kiki
+
 	fi
 
 	if [[ "$player" == "pororon" ]] && [[ "$egg_count_pororon" == 10 ]]; then
@@ -767,6 +779,8 @@ do
 			pororon_egg=""
 			kiki_egg=$kiki_egg
 		fi	
+		egg_point_pororon=$egg_point_pororon
+
 	fi
 
 	if [[ "$player" == "kiki" ]] && [[ "$egg_count_kiki" == 10 ]]; then
@@ -790,6 +804,8 @@ do
 			pororon_egg=$pororon_egg
 			kiki_egg=""
 		fi	
+		egg_point_kiki=$egg_point_kiki
+
 	fi
 
 	if [[ "$player" == "pororon" ]] && [[ "$egg_count_pororon" == 13 ]]; then
@@ -801,6 +817,8 @@ do
 		egg_count_pororon=0
 		pororon_egg=""
 		kiki_egg=$kiki_egg
+		egg_point_pororon=$egg_point_pororon
+
 	fi
 
 	if [[ "$player" == "kiki" ]] && [[ "$egg_count_kiki" == 13 ]]; then
@@ -812,10 +830,10 @@ do
 		egg_count_kiki=0
 		pororon_egg=$pororon_egg
 		kiki_egg=""
+		egg_point_kiki=$egg_point_kiki
 	fi
 
 	point=$(($count_plus - $count_minus))
-
 	
 	if [[ "$angel_flag" == "$player" ]] && [[ "$x" != "$angel_count" ]]; then
 		angel_flag="false"
@@ -823,7 +841,8 @@ do
 
 	if [[ $p == 0 ]]; then
 		new_playerB_point=$kiki
-		new_playerA_point=$(( $pororon + $point + $egg_point_pororon ))
+		point=$(($point + $egg_point_pororon))
+		new_playerA_point=$(( $pororon + $point ))
 
 		if [[ $devil_flag == "true" ]]; then
 			new_playerA_point=0
@@ -838,7 +857,9 @@ do
 		player=$2
 
 	elif [[ $p == 1 ]]; then 
-		new_playerB_point=$(( $kiki + $point + $egg_point_kiki ))
+		point=$(($point + $egg_point_kiki))
+		new_playerB_point=$(( $kiki + $point ))
+
 		if [[ $devil_flag == "true" ]]; then
 			new_playerB_point=0
 			$devil_flag == "false"
