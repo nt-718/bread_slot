@@ -4,8 +4,8 @@ source ./score.txt
 source ./array.txt
 
 echo "INFO"
-echo "pororon $pororon 🤤$pororon_good🤤 🤢$pororon_bad🤢"
-echo "kiki    $kiki 🤤$kiki_good🤤 🤢$kiki_bad🤢"
+echo "pororon $pororon 🤤$pororon_good🤤 🤢$pororon_bad🤢 $pororon_egg"
+echo "kiki    $kiki 🤤$kiki_good🤤 🤢$kiki_bad🤢 $kiki_egg"
 
 echo
 
