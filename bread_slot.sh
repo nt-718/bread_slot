@@ -203,6 +203,7 @@ count_point() {
 			echo "pororon_egg=🥚" >> ./score.txt
 			echo "kiki_egg=$kiki_egg" >> ./score.txt
 		fi
+		egg_count_pororon=$egg_count_pororon
 
 		if [[ "$player" == "kiki" ]] && [[ "$egg_count_kiki" == 0 ]]; then
 			egg_count_kiki=1
@@ -217,6 +218,7 @@ count_point() {
 			echo "pororon_egg=$pororon_egg" >> ./score.txt
 			echo "kiki_egg=🥚" >> ./score.txt
 		fi
+		egg_count_kiki=$egg_count_kiki
 	fi
 
 	if [[ "$2" != "roulette" ]]; then
@@ -653,7 +655,7 @@ do
 		egg_count_kiki=$(($egg_count_kiki + 1))
 	fi
 
-	if [[ "$player" == "pororon" ]] && [[ "$egg_count_pororon" == 4 ]]; then
+	if [[ "$player" == "pororon" ]] && [[ "$egg_count_pororon" == 3 ]]; then
 		
 		if [[ $((RANDOM%+101)) -gt 95 ]]; then
 			echo
@@ -683,7 +685,7 @@ do
 
 	fi
 
-	if [[ "$player" == "kiki" ]] && [[ "$egg_count_kiki" == 4 ]]; then
+	if [[ "$player" == "kiki" ]] && [[ "$egg_count_kiki" == 3 ]]; then
 		if [[ $((RANDOM%+101)) -gt 95 ]]; then
 			echo
 			echo "🥚から👼が生まれました！！"
@@ -712,7 +714,7 @@ do
 
 	fi
 
-	if [[ "$player" == "pororon" ]] && [[ "$egg_count_pororon" == 7 ]]; then
+	if [[ "$player" == "pororon" ]] && [[ "$egg_count_pororon" == 5 ]]; then
 		if [[ $((RANDOM%+101)) -gt 50 ]]; then
 			echo
 			echo "🐣が成長して🐥になりました！！"
@@ -736,7 +738,7 @@ do
 
 	fi
 
-	if [[ "$player" == "kiki" ]] && [[ "$egg_count_kiki" == 7 ]]; then
+	if [[ "$player" == "kiki" ]] && [[ "$egg_count_kiki" == 5 ]]; then
 		if [[ $((RANDOM%+101)) -gt 50 ]]; then
 			echo
 			echo "🐣が成長して🐥になりました！！"
@@ -760,7 +762,7 @@ do
 
 	fi
 
-	if [[ "$player" == "pororon" ]] && [[ "$egg_count_pororon" == 10 ]]; then
+	if [[ "$player" == "pororon" ]] && [[ "$egg_count_pororon" == 7 ]]; then
 		if [[ $((RANDOM%+101)) -gt 50 ]]; then
 			echo
 			echo "🐥が成長して🐔になりました！！"
@@ -783,7 +785,7 @@ do
 
 	fi
 
-	if [[ "$player" == "kiki" ]] && [[ "$egg_count_kiki" == 10 ]]; then
+	if [[ "$player" == "kiki" ]] && [[ "$egg_count_kiki" == 7 ]]; then
 		if [[ $((RANDOM%+101)) -gt 50 ]]; then
 			echo
 			echo "🐥が成長して🐔になりました！！"
@@ -808,7 +810,7 @@ do
 
 	fi
 
-	if [[ "$player" == "pororon" ]] && [[ "$egg_count_pororon" == 13 ]]; then
+	if [[ "$player" == "pororon" ]] && [[ "$egg_count_pororon" == 10 ]]; then
 		echo
 		echo "🐔が息を引き取りました。"
 		echo "毎ターンのポイント加算が終了します。"
@@ -821,7 +823,7 @@ do
 
 	fi
 
-	if [[ "$player" == "kiki" ]] && [[ "$egg_count_kiki" == 13 ]]; then
+	if [[ "$player" == "kiki" ]] && [[ "$egg_count_kiki" == 10 ]]; then
 		echo
 		echo "🐔が息を引き取りました。"
 		echo "毎ターンのポイント加算が終了します。"
