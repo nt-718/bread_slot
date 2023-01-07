@@ -9,6 +9,7 @@ source ./db/game_history.txt
 
 slot_count=1
 successive_point=0
+num=1
 
 spin_slot() {
 
@@ -21,7 +22,10 @@ spin_slot() {
 	player_num=`get_index $player`
 
 	if [ "$first_value" == "$second_value" -a "$first_value" == "$third_value" ]; then
-		
+		if [[ "$tomato_fes_flag" == true ]]; then
+			slot="🍅 🍅 🍅"
+		fi
+
 		if [[ "$angel_flag" == "$player" ]]; then
 			slot="${player_goods[$player_num]} ${player_goods[$player_num]} ${player_goods[$player_num]}"
 		fi
@@ -29,6 +33,9 @@ spin_slot() {
 		echo -e "\e[33m$slot_count: $slot Delisious! 😋 😋 😋\e[m"
 		count_point "$slot"
 		insert_prev_item "$first_value"
+		sed -i "2s/^//" ./db/all_pair_history.txt
+		sed -i "3s/^/${num}: $player:$slot\n/" ./db/all_pair_history.txt
+		num=$(($num + 1))
 	else
 		echo "$slot_count: $slot"
 	fi
@@ -127,40 +134,40 @@ count_point() {
 	# 	egg_count_kiki=$egg_count_kiki
 	# fi
 
-	# if [[ "$2" != "roulette" ]]; then
-	# 	if [[ $(($num % 10)) == 0 ]]; then
-	# 		10times_pint=$(($10times_pint + 5))
-	# 		echo
-	# 		echo -e "\e[35m$num個目ボーナス!\e[m"
-	# 		echo
-	# 	fi
+	if [[ "$2" != "roulette" ]]; then
+		if [[ $(($num % 10)) == 0 ]]; then
+			ten_times_point=$(($ten_times_point + 5))
+			echo
+			echo -e "\e[35m$num個目ボーナス!\e[m"
+			echo
+		fi
 
-	# 	if [[ $(($num % 10)) == 1 ]] && [[ $num != 1 ]]; then
-	# 		11times_point=$(($11times_point + 6))
-	# 		echo
-	# 		echo -e "\e[35m残念、$num個目アンラッキー!\e[m"
-	# 		echo
-	# 	fi
+		if [[ $(($num % 10)) == 2 ]] && [[ $num != 2 ]]; then
+			bad_times_point=$(($bad_times_point + 6))
+			echo
+			echo -e "\e[35m残念、$num個目アンラッキー!\e[m"
+			echo
+		fi
 
-		# first_check=`grep "$slot_result" all_pair_history.txt`
+		first_check=`grep "$slot_result" ./db/all_pair_history.txt`
 
-		# if [[ "$first_check" == "" ]]; then
-		# 	count_plus=$(($count_plus + 1))
-		# 	echo
-		# 	echo "FIRST TIME🎉 $slot_result 🎉"
-		# 	echo
-		# fi
-	# fi
+		if [[ "$first_check" == "" ]]; then
+			count_plus=$(($count_plus + 1))
+			echo
+			echo "FIRST TIME🎉 $slot_result 🎉"
+			echo
+		fi
+	fi
 
 	if [[ "${player_goods[$player_num]} ${player_goods[$player_num]} ${player_goods[$player_num]}" == "$slot_result" ]]; then
 		good_point=$(($good_point + 5))
-		echo "$playerの好きなものです😍"
+		echo "😍 $slot_result 😍"
 		echo
 	fi
 	
 	if [[ "${player_bads[$player_num]} ${player_bads[$player_num]} ${player_bads[$player_num]}" == "$slot_result" ]]; then
 		bad_point=$(($bad_point + 5))
-		echo "$playerの苦手なものです🤢"
+		echo "🤢 $slot_result 🤢"
 		echo
 	fi
 
@@ -206,7 +213,7 @@ get_index() {
 lucky_roulette() {
 	
 	echo 
-	echo -e "\e[34mラッキールーレット👼\e[m"
+	echo -e "\e[34m👼ラッキールーレット👼\e[m"
 	read -p "$playerさんはEnterを押してルーレットを回しください。"
 	
 	aaaa='\r👉'	
@@ -225,7 +232,7 @@ lucky_roulette() {
 
 unlucky_roulette() {
 	echo 
-	echo -e "\e[31mアンラッキールーレット👿\e[m"
+	echo -e "\e[31m👿アンラッキールーレット👿\e[m"
 	read -p "$playerさんはEnterを押してルーレットを回しください。"
     bad_array=(👿 🍅 🐵 ${player_bads[@]} 🍅 🐵 ${player_bads[@]} 🍅 🐵 ${player_bads[@]})
 	bbbb='\r👉'

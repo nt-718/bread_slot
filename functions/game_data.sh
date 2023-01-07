@@ -29,6 +29,7 @@ insert_game_data() {
 	if [[ "${players[$((${#players[@]} - 1))]}" == "$player" ]]; then
 		game_count=$(($game_count + 1))
 		fever_time
+		tomato_festival
 	fi
 
 	echo "game_count=$game_count" > ./db/game_history.txt

@@ -75,6 +75,10 @@ start_game() {
             i=$(($i + 1 ))
         done
 
+        echo "HISTORY" > ./db/all_pair_history.txt
+    	echo "" >> ./db/all_pair_history.txt
+	    echo "" >> ./db/all_pair_history.txt
+
         echo "game_count=1" > ./db/game_history.txt
         echo "prev_item=" >> ./db/game_history.txt
 
@@ -104,4 +108,25 @@ check_null() {
             player_names[$i]=player${i}
         fi
     done
+}
+
+finish_game() {
+    source ./db/points.txt
+    if [[ "$game_count" == "$(($game_set + 1))" ]]; then
+		echo "Finish!!"
+		echo
+		
+		echo "勝者は・・・"
+		read Wait
+
+		if [[ ${player_points[0]} < ${player_points[1]} ]]; then
+			echo "👏 Winner 🎉${players[1]}🎉 👏"
+		elif [[ ${player_points[0]} > ${player_points[1]} ]]; then
+			echo "👏 Winner 🎉${players[0]}🎉 👏"
+		else
+			echo "Draw"
+		fi
+
+		break
+	fi
 }

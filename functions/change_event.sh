@@ -65,3 +65,27 @@ fever_time() {
         echo -e "\e[34m通常のポイント+1されます!!\e[m"
     fi
 }
+
+free_time() {
+
+	if [[ $((RANDOM%+101)) -gt 80 ]]; then
+		free_flag="true"
+		echo
+		echo "💸フリータイムです！！💸"
+		echo "💸このターンは無料で回せます！！💸"
+	fi
+}
+
+tomato_festival() {
+    if [[ $tomato_fes_flag == "true" ]]; then
+        tomato_fes_flag="false"
+        echo "🍅FESTIVALが終了しました。🍅"
+
+    elif [[ $((RANDOM%+101)) -gt 85 ]]; then
+        tomato_fes_flag="true"
+        echo
+        echo "🍅🍅🍅 FESTIVAL 🍅🍅🍅"
+        echo "次のターン、揃ったものはすべて🍅になります。"
+        echo "連続ポイントは加算されません。"
+    fi
+}

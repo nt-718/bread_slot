@@ -8,25 +8,17 @@ source ./db/events.txt
 source ./db/game_history.txt
 
 calculate_point() {
-    point_plus=$(( $mutch_count + $successive_point + $fever_point + $lucky_point + $good_point ))
+    if [[ "$free_flag" == true ]]; then
+        paid_coin=0
+        free_flag=false
+    fi
+    point_plus=$(( $mutch_count + $successive_point + $fever_point + $lucky_point + $good_point + $ten_times_point + $bad_times_point))
     point_minus=$(($paid_coin + $tomato_point + $monkey_point + $bad_point ))
     if [[ $bad_apple == true ]]; then
         point_plus=0
     fi
 
     point=$(($point_plus - $point_minus))
-    
-    echo
-    echo "mutch_count:$mutch_count"
-    echo "successive_point:$successive_point"
-    echo "fever_point:$fever_point"
-    echo "lucky_point:$lucky_point"
-    echo "good_point:$good_point"
-    echo "paid_coin:-$paid_coin"
-    echo "tomato_point:-$tomato_point"
-    echo "monkey_point:-$monkey_point"
-    echo "bad_point:-$bad_point"
-    echo "point:$point"
 
 }
 

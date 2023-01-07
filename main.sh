@@ -26,11 +26,35 @@ reset_slot() {
 	lucky_point=0
 	tomato_point=0
 	monkey_point=0
+	ten_times_point=0
+	bad_times_point=0
 	good_point=0
 	bad_point=0
     point_plus=0
     point_minus=0
 	bad_apple="false"
+}
+
+show_summary() {
+	source ./db/points.txt
+	echo
+    echo "mutch_count:$mutch_count"
+    echo "successive_point:$successive_point"
+    echo "fever_point:$fever_point"
+    echo "lucky_point:$lucky_point"
+    echo "ten_times_point:$ten_times_point"
+    echo "bad_times_point:$bad_times_point"
+    echo "good_point:$good_point"
+	echo
+    echo "paid_coin:-$paid_coin"
+    echo "tomato_point:-$tomato_point"
+    echo "monkey_point:-$monkey_point"
+    echo "bad_point:-$bad_point"
+	echo
+    echo "point:$point"
+	echo
+	echo "${players[0]}:${player_points[0]}"
+	echo "${players[1]}:${player_points[1]}"
 }
 
 reset_slot
@@ -62,6 +86,7 @@ do
 	angel_event
 	insert_game_data
 	insert_point_data
+	show_summary
 	change_event
 	change_player "$player"
 	reset_slot
@@ -70,6 +95,7 @@ do
 		echo
 		echo -e "\e[34mフィーバー中です!!\e[m"
 	fi
+	free_time
 	echo
 	echo -e "\e[35m$playerのターンです!\e[m"
 	read -p "何コイン使いますか? " paid_coin
