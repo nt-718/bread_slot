@@ -1,0 +1,12 @@
+pororon=10
+kiki=12
+
+pororon_good=🍎
+pororon_bad=🍺
+
+kiki_good=🍎
+kiki_bad=🥑
+
+LUCKY_FOOD=
+pororon_egg=
+kiki_egg=

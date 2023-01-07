@@ -1,0 +1,5 @@
+HISTORY
+1回目
+pororon, try: 100回, point: 1, total: 10
+kiki, try: 100回, point: 2, total: 12
+
