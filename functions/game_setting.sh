@@ -87,10 +87,10 @@ start_game() {
         echo "players=(${player_names[0]} ${player_names[1]})" > ./db/players.txt
         echo "player_goods=(${player_goods[0]} ${player_goods[1]})" >> ./db/players.txt
         echo "player_bads=(${player_bads[0]} ${player_bads[1]})" >> ./db/players.txt
-        echo "player_eggs=()" >> ./db/players.txt
 
         echo "lucky_item=" > ./db/events.txt
         echo "seasonal_item=" >> ./db/events.txt
+        echo "eggs=(0 0)" >> ./db/events.txt
         
         item_array_to_use=("${item_array[@]} ${item_array[@]} ${item_array[@]} 🐵")
         echo "item_array=(${item_array[@]})" > ./db/items.txt

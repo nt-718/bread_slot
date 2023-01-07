@@ -7,13 +7,15 @@ source ./db/points.txt
 source ./db/events.txt
 source ./db/game_history.txt
 
+egg_point=0
+
 calculate_point() {
     if [[ "$free_flag" == true ]]; then
         paid_coin=0
         free_flag=false
     fi
-    point_plus=$(( $mutch_count + $successive_point + $fever_point + $lucky_point + $good_point + $ten_times_point + $bad_times_point))
-    point_minus=$(($paid_coin + $tomato_point + $monkey_point + $bad_point ))
+    point_plus=$(( $mutch_count + $successive_point + $fever_point + $lucky_point + $good_point + $ten_times_point + $first_point + $egg_point))
+    point_minus=$(($paid_coin + $tomato_point + $monkey_point + $bad_point + $bad_times_point))
     if [[ $bad_apple == true ]]; then
         point_plus=0
     fi

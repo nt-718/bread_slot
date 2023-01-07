@@ -8,10 +8,12 @@ source ./db/events.txt
 source ./db/game_history.txt
 
 change_event() {
+    source ./db/events.txt
     change_lucky_item
     change_seasonal_item
     echo "lucky_item=$lucky_item" > ./db/events.txt
     echo "seasonal_item=$seasonal_item" >> ./db/events.txt
+	echo "eggs=(${eggs[@]})" >> ./db/events.txt
 }
 
 change_lucky_item() {
@@ -88,4 +90,111 @@ tomato_festival() {
         echo "次のターン、揃ったものはすべて🍅になります。"
         echo "連続ポイントは加算されません。"
     fi
+}
+
+egg_growth() {
+	new_eggs=()
+
+    for i in `seq 0 $((${#players[@]} - 1))`
+    do
+        if [[ ${players[$i]} == "$player" ]]; then
+            if [[ ${eggs[$i]} != 0 ]]; then
+                if [[ $1 == "death" ]]; then
+    				new_eggs+=(0)
+                else
+	    			new_eggs+=($((${eggs[$i]} + 1)))
+                fi
+			fi
+        else
+            new_eggs+=(${eggs[$i]})
+        fi
+    done
+
+    echo "eggs=(${new_eggs[@]})" >> ./db/events.txt
+}
+
+egg_bonus() {
+    search_name=$1
+	for i in `seq 0 $((${#players[@]} - 1))`
+	do
+		if [[ ${players[$i]} == "$search_name" ]]; then
+			player_num=$i
+		fi
+	done
+	
+    if [[ "${eggs[$player_num]}" == 3 ]]; then
+		
+		if [[ $((RANDOM%+101)) -gt 95 ]]; then
+			echo
+			echo "🥚から👼が生まれました！！"
+			count_point "👼 👼 👼"
+
+		elif [[ $((RANDOM%+101)) -gt 50 ]]; then
+			echo
+			echo "🥚が孵化して🐣になりました！！"
+			echo "毎ターン+1ポイントされます。"
+			echo
+            egg_point=1
+            egg_growth
+
+		else
+			echo
+			echo "🥚の孵化に失敗しました。"
+			echo
+            egg_point=0
+            egg_growth "death"
+
+		fi
+
+    elif [[ "${eggs[$player_num]}" == 5 ]]; then
+		
+        if [[ $((RANDOM%+101)) -gt 50 ]]; then
+			echo
+			echo "🐣が成長して🐥になりました！！"
+			echo "毎ターン+2ポイントされます。"
+			echo
+            egg_point=2
+            egg_growth
+
+		else
+			echo
+			echo "🐣が息を引き取りました。"
+			echo
+            egg_point=0
+            egg_growth "death"
+
+		fi
+
+    elif [[ "${eggs[$player_num]}" == 7 ]]; then
+		
+		if [[ $((RANDOM%+101)) -gt 50 ]]; then
+			echo
+			echo "🐥が成長して🐔になりました！！"
+			echo "毎ターン+3ポイントされます。"
+			echo
+            egg_point=3
+            egg_growth
+
+		else
+			echo
+			echo "🐥が息を引き取りました。"
+			echo
+            egg_point=0
+            egg_growth "death"
+
+		fi
+    
+    elif [[ "${eggs[$player_num]}" == 10 ]]; then
+		echo
+		echo "🐔が息を引き取りました。"
+		echo "毎ターンのポイント加算が終了します。"
+		echo
+        egg_point=0
+        egg_growth "death"
+
+    else
+        egg_growth
+
+	fi
+
 }

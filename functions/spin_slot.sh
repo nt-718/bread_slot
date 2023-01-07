@@ -98,41 +98,28 @@ count_point() {
 		done
 	fi
 
-	# if [[ "$slot_result" == "🥚 🥚 🥚" ]]; then
-	# 	echo
-	# 	echo "🥚を獲得した！"
-	# 	echo
+	if [[ "$slot_result" == "🥚 🥚 🥚" ]]; then
+	    source ./db/events.txt
+		echo "🥚を獲得した！"
+		echo
+		new_eggs=()
 
-	# 	if [[ "$player" == "pororon" ]] && [[ "$egg_count_pororon" == 0 ]]; then
-	# 		egg_count_pororon=1
+		for i in `seq 0 $((${#players[@]} - 1))`
+		do
+			if [[ ${players[$i]} == "$player" ]]; then 
+				if [[ ${eggs[$i]} == 0 ]]; then
+					new_eggs+=("1")
+				else
+					new_eggs+=(${eggs[$i]})
+				fi
+			else
+				new_eggs+=(${eggs[$i]})
+			fi
+		done
 
-	# 		echo "pororon=$pororon" > ./score.txt
-	# 		echo "kiki=$kiki" >> ./score.txt
-	# 		echo "pororon_good=$pororon_good" >> ./score.txt
-	# 		echo "pororon_bad=$pororon_bad" >> ./score.txt
-	# 		echo "kiki_good=$kiki_good" >> ./score.txt
-	# 		echo "kiki_bad=$kiki_bad" >> ./score.txt
-	# 		echo "lucky_item=$lucky_item" >> ./score.txt
-	# 		echo "pororon_egg=🥚" >> ./score.txt
-	# 		echo "kiki_egg=$kiki_egg" >> ./score.txt
-	# 	fi
-	# 	egg_count_pororon=$egg_count_pororon
-
-	# 	if [[ "$player" == "kiki" ]] && [[ "$egg_count_kiki" == 0 ]]; then
-	# 		egg_count_kiki=1
-
-	# 		echo "pororon=$pororon" > ./score.txt
-	# 		echo "kiki=$kiki" >> ./score.txt
-	# 		echo "pororon_good=$pororon_good" >> ./score.txt
-	# 		echo "pororon_bad=$pororon_bad" >> ./score.txt
-	# 		echo "kiki_good=$kiki_good" >> ./score.txt
-	# 		echo "kiki_bad=$kiki_bad" >> ./score.txt
-	# 		echo "lucky_item=$lucky_item" >> ./score.txt
-	# 		echo "pororon_egg=$pororon_egg" >> ./score.txt
-	# 		echo "kiki_egg=🥚" >> ./score.txt
-	# 	fi
-	# 	egg_count_kiki=$egg_count_kiki
-	# fi
+		echo "eggs=(${new_eggs[@]})" >> ./db/events.txt
+		
+	fi
 
 	if [[ "$2" != "roulette" ]]; then
 		if [[ $(($num % 10)) == 0 ]]; then
@@ -152,7 +139,7 @@ count_point() {
 		first_check=`grep "$slot_result" ./db/all_pair_history.txt`
 
 		if [[ "$first_check" == "" ]]; then
-			count_plus=$(($count_plus + 1))
+			first_point=$(($first_point + 1))
 			echo
 			echo "FIRST TIME🎉 $slot_result 🎉"
 			echo

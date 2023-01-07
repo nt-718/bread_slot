@@ -23,6 +23,7 @@ reset_slot() {
 	mutch_count=0
 	successive_point=0
 	fever_point=0
+	first_point=0
 	lucky_point=0
 	tomato_point=0
 	monkey_point=0
@@ -40,15 +41,17 @@ show_summary() {
 	echo
     echo "mutch_count:$mutch_count"
     echo "successive_point:$successive_point"
+    echo "first_point:$first_point"
     echo "fever_point:$fever_point"
     echo "lucky_point:$lucky_point"
+	echo "egg_point:$egg_point"
     echo "ten_times_point:$ten_times_point"
-    echo "bad_times_point:$bad_times_point"
     echo "good_point:$good_point"
 	echo
     echo "paid_coin:-$paid_coin"
     echo "tomato_point:-$tomato_point"
     echo "monkey_point:-$monkey_point"
+    echo "bad_times_point:$bad_times_point"
     echo "bad_point:-$bad_point"
 	echo
     echo "point:$point"
@@ -68,6 +71,8 @@ do
 		break
 	elif [[ -z $paid_coin ]]; then
 		paid_coin=1
+	elif [[ $paid_coin -gt 5 ]]; then
+		paid_coin=5
  	elif [[ "$paid_coin" =~ ^[0-9]+$ ]]; then
 		paid_coin=$paid_coin
 	else
@@ -82,6 +87,7 @@ do
 	done
 
 	spin_roulette
+	egg_bonus
 	calculate_point
 	angel_event
 	insert_game_data
