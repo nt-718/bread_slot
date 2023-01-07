@@ -14,3 +14,4 @@ tail -f slot_history.txt
 
 ゲーム情報を表示
 watch -t -d -n 1 bash bread_slot_view.sh
+
