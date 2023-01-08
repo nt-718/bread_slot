@@ -48,10 +48,10 @@ do
 	egg_bonus
 	calculate_point
 	angel_event
-	insert_game_data
 	insert_point_data
 	change_event
 	show_summary
+	insert_game_data
 	change_player "$player"
 	reset_slot
 
@@ -61,10 +61,12 @@ do
 	fi
 	
 	free_time
-	random_pay
+	finish_game
 
 	echo
 	echo -e "\e[35m$playerのターンです!\e[m"
+	random_pay
+
 	if [[ $ghost_flag == true ]]; then
 		random_array=(1 2 3 4 5)
 		dddd='\r👉'

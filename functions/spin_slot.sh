@@ -43,6 +43,7 @@ spin_slot() {
 		sed -i "2s/^//" ./db/all_pair_history.txt
 		sed -i "3s/^/${num}: $player:$slot\n/" ./db/all_pair_history.txt
 		num=$(($num + 1))
+		change_lucky_item
 	else
 		echo "$slot_count: $slot"
 	fi
@@ -277,8 +278,12 @@ spin_roulette() {
 show_summary() {
 	source ./db/points.txt
 	source ./db/events.txt
+	source ./db/game_history.txt
+
 	echo
-    echo "mutch_count:$mutch_count"
+    echo "game_count=$game_count"
+	echo
+	echo "mutch_count:$mutch_count"
     echo "successive_point:$successive_point"
     echo "first_point:$first_point"
     echo "fever_point:$fever_point"
@@ -290,7 +295,7 @@ show_summary() {
     echo "paid_coin:-$paid_coin"
     echo "tomato_point:-$tomato_point"
     echo "monkey_point:-$monkey_point"
-    echo "bad_times_point:$bad_times_point"
+    echo "bad_times_point:-$bad_times_point"
     echo "bad_point:-$bad_point"
 	echo
     echo "point:$point"

@@ -1,3 +1,4 @@
-lucky_item=
-seasonal_item=
-eggs=(0 0)
+lucky_item=🍎
+seasonal_item=🍖
+eggs=(0 2)
+lucky_item=🥚

@@ -9,7 +9,6 @@ source ./db/game_history.txt
 
 change_event() {
     source ./db/events.txt
-    change_lucky_item
     change_seasonal_item
     echo "lucky_item=$lucky_item" > ./db/events.txt
     echo "seasonal_item=$seasonal_item" >> ./db/events.txt
@@ -20,11 +19,13 @@ change_lucky_item() {
     source ./db/game_history.txt
     source ./db/events.txt
     
-    if [[ $(($game_count % 10)) == 0 ]] && [[ "$player" == "${players[$((${#players[@]} - 1))]}" ]]; then
-        lucky_item=${item_array[$(($RANDOM % ${#item_array[@]}))]}
-        echo "lucky_item=$lucky_item" >> ./db/events.txt
+    count=$(cat ./db/all_pair_history.txt | grep : | wc -l)
+    
+    if [[ $(($count % 10)) == 0 ]]; then
+        lucky_item_to_add=${item_array[$(($RANDOM % ${#item_array[@]}))]}
+        echo "lucky_item=$lucky_item_to_add" >> ./db/events.txt
         echo
-        echo -e "\e[34m🎉ラッキーアイテムが$lucky_itemになりました🎉\e[m"
+        echo -e "\e[34m🎉ラッキーアイテムが$lucky_item_to_addになりました🎉\e[m"
     fi
 }
 

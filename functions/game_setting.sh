@@ -123,7 +123,6 @@ finish_game() {
 		else
 			echo "Draw"
 		fi
-
-		break
+        exit
 	fi
 }
