@@ -1,0 +1,2 @@
+game_count=2
+prev_item=🥑

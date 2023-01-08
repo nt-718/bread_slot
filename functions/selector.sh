@@ -1,10 +1,8 @@
 #!/bin/bash
 
-source ./array.txt
-# printf '\n%s\n%s\n\n' "All files on this directory: " "Please choose file to cat":
+source ./db/items.txt
 
-# options=(`ls`)
-food_array=(${original_array[@]})
+food_array=(${item_array[@]})
 num_array=("1" "2" "3" "4" "5")
 
 select_option (){
@@ -93,7 +91,7 @@ select_option (){
        return "$selected"
 }
 
-echo_value() {
+get_value() {
     
     if [[ "$1" == "food_array" ]]; then 
         options=("${food_array[@]}")
@@ -109,7 +107,6 @@ echo_value() {
 
     index=$choice
     value=${options[$choice]}
-    # echo $value
 }
 
 selected_value="$value"
