@@ -18,48 +18,6 @@ start_game
 source ./db/players.txt
 source ./db/items.txt
 
-reset_slot() {
-	slot_count=1
-	mutch_count=0
-	successive_point=0
-	fever_point=0
-	first_point=0
-	lucky_point=0
-	tomato_point=0
-	monkey_point=0
-	ten_times_point=0
-	bad_times_point=0
-	good_point=0
-	bad_point=0
-    point_plus=0
-    point_minus=0
-	bad_apple="false"
-}
-
-show_summary() {
-	source ./db/points.txt
-	echo
-    echo "mutch_count:$mutch_count"
-    echo "successive_point:$successive_point"
-    echo "first_point:$first_point"
-    echo "fever_point:$fever_point"
-    echo "lucky_point:$lucky_point"
-	echo "egg_point:$egg_point"
-    echo "ten_times_point:$ten_times_point"
-    echo "good_point:$good_point"
-	echo
-    echo "paid_coin:-$paid_coin"
-    echo "tomato_point:-$tomato_point"
-    echo "monkey_point:-$monkey_point"
-    echo "bad_times_point:$bad_times_point"
-    echo "bad_point:-$bad_point"
-	echo
-    echo "point:$point"
-	echo
-	echo "${players[0]}:${player_points[0]}"
-	echo "${players[1]}:${player_points[1]}"
-}
-
 reset_slot
 
 player=${players[0]}
@@ -92,8 +50,8 @@ do
 	angel_event
 	insert_game_data
 	insert_point_data
-	show_summary
 	change_event
+	show_summary
 	change_player "$player"
 	reset_slot
 
@@ -101,10 +59,32 @@ do
 		echo
 		echo -e "\e[34mフィーバー中です!!\e[m"
 	fi
+	
 	free_time
+	random_pay
+
 	echo
 	echo -e "\e[35m$playerのターンです!\e[m"
-	read -p "何コイン使いますか? " paid_coin
+	if [[ $ghost_flag == true ]]; then
+		random_array=(1 2 3 4 5)
+		dddd='\r👉'
+
+		for y in {1..50}
+		do
+			random_pay_number=${random_array[$(($RANDOM % ${#random_array[*]}))]}
+			if [[ $y == 50 ]]; then
+				printf "${dddd}$random_pay_number👈\n"
+				echo "$random_pay_numberコイン使用されました。"
+				read Wait
+				paid_coin=$random_pay_number
+			else
+				printf "${dddd}$random_pay_number👈"
+			fi
+			sleep 0.1
+		done
+	else
+		read -p "何コイン使いますか? " paid_coin
+	fi
 done
 
 # =================================================

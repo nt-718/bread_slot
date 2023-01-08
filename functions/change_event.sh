@@ -23,6 +23,8 @@ change_lucky_item() {
     if [[ $(($game_count % 10)) == 0 ]] && [[ "$player" == "${players[$((${#players[@]} - 1))]}" ]]; then
         lucky_item=${item_array[$(($RANDOM % ${#item_array[@]}))]}
         echo "lucky_item=$lucky_item" >> ./db/events.txt
+        echo
+        echo -e "\e[34m🎉ラッキーアイテムが$lucky_itemになりました🎉\e[m"
     fi
 }
 
@@ -93,6 +95,7 @@ tomato_festival() {
 }
 
 egg_growth() {
+    source ./db/events.txt
 	new_eggs=()
 
     for i in `seq 0 $((${#players[@]} - 1))`
@@ -115,6 +118,7 @@ egg_growth() {
 
 egg_bonus() {
     search_name=$1
+    source ./db/events.txt
 	for i in `seq 0 $((${#players[@]} - 1))`
 	do
 		if [[ ${players[$i]} == "$search_name" ]]; then
@@ -134,14 +138,12 @@ egg_bonus() {
 			echo "🥚が孵化して🐣になりました！！"
 			echo "毎ターン+1ポイントされます。"
 			echo
-            egg_point=1
             egg_growth
 
 		else
 			echo
 			echo "🥚の孵化に失敗しました。"
 			echo
-            egg_point=0
             egg_growth "death"
 
 		fi
@@ -153,14 +155,12 @@ egg_bonus() {
 			echo "🐣が成長して🐥になりました！！"
 			echo "毎ターン+2ポイントされます。"
 			echo
-            egg_point=2
             egg_growth
 
 		else
 			echo
 			echo "🐣が息を引き取りました。"
 			echo
-            egg_point=0
             egg_growth "death"
 
 		fi
@@ -172,14 +172,12 @@ egg_bonus() {
 			echo "🐥が成長して🐔になりました！！"
 			echo "毎ターン+3ポイントされます。"
 			echo
-            egg_point=3
             egg_growth
 
 		else
 			echo
 			echo "🐥が息を引き取りました。"
 			echo
-            egg_point=0
             egg_growth "death"
 
 		fi
@@ -189,12 +187,21 @@ egg_bonus() {
 		echo "🐔が息を引き取りました。"
 		echo "毎ターンのポイント加算が終了します。"
 		echo
-        egg_point=0
         egg_growth "death"
 
-    else
+    elif [[ "${eggs[$player_num]}" != 0 ]]; then
         egg_growth
 
 	fi
 
+}
+
+random_pay() {
+    
+    if [[ $((RANDOM%+101)) -gt 85 ]]; then
+        ghost_flag="true"
+        echo
+        echo "👻 幽霊のいたずら 👻"
+        echo "使用するコイン数がランダムになった"
+    fi
 }

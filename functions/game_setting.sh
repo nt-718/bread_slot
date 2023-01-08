@@ -14,12 +14,9 @@ start_game() {
 
     if [ "$reset" == "N" -o "$reset" == "n" ]; then
         game_count=$game_count
-        items_count=$((${#player0_item[@]} + ${#player1_item[@]}))
+        num=$(cat ./db/all_pair_history.txt | grep : | wc -l)
         game_count=$(($game_count + 1))
-        items_count=$(($items_count + 1))
-
-        player0_name=${players[0]}
-        player1_name=${players[1]}
+        num=$(($num + 1))
 
     else
         echo "プレイヤー1の名前を入力してください"
@@ -98,7 +95,7 @@ start_game() {
 
     fi
 
-    echo -e "\e[35m${player_names[0]}のターンです!\e[m"
+    echo -e "\e[35m${players[0]}のターンです!\e[m"
 }
 
 check_null() {

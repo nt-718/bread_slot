@@ -23,7 +23,14 @@ spin_slot() {
 
 	if [ "$first_value" == "$second_value" -a "$first_value" == "$third_value" ]; then
 		if [[ "$tomato_fes_flag" == true ]]; then
-			slot="🍅 🍅 🍅"
+			echo
+			if [[ "$slot" == "🍅 🍅 🍅" ]]; then
+				echo "残念、🍅 🍅 🍅を引いてしまった！"
+				tomato_point=$(($tomato_point + 3))
+			else
+				echo "残念、$slotは🍅 🍅 🍅に変化した"
+				slot="🍅 🍅 🍅"
+			fi
 		fi
 
 		if [[ "$angel_flag" == "$player" ]]; then
@@ -48,8 +55,12 @@ count_point() {
     slot_result=$1
 	mutch_count=$(($mutch_count + 1))
 
+	first_value=`echo "$slot_result" | awk '{print $1}'`
+
     if [[ "$first_value" == "$prev_item" ]]; then
         successive_point=$(($successive_point + 1))
+		echo "連続ボーナス：$slot_result"
+		echo
     fi
 
 	if [[ "$fever_flag" == "true" ]]; then
@@ -58,6 +69,8 @@ count_point() {
 
 	if [[ "$lucky_item $lucky_item $lucky_item" == "$slot_result" ]]; then
 		lucky_point=$(($lucky_point + 10))
+		echo "✨ $slot_result ✨"
+		echo
 	fi
 
 	if [[ "$slot_result" == "🍅 🍅 🍅" ]]; then
@@ -91,10 +104,19 @@ count_point() {
 	if [[ "$slot_result" == "🐵 🐵 🐵" ]]; then
 		monkey_point=$(($monkey_point + 10))
 		echo
-		for i in `seq 1 ${LINES}`
+		monkey_array=(🙈 🙉 🙊)
+		eeee='\r👉'
+
+		for y in {1..10}
 		do
-			echo -e "\e[35m🐵 🐵 🐵 🐵 🐵 🐵 🐵 🐵 🐵 🐵\e[m"
-			sleep 0.1
+			monkey_result=${monkey_array[$(($RANDOM % ${#monkey_array[*]}))]}
+			if [[ $y == 10 ]]; then
+				printf "${eeee}$monkey_result👈\n"
+				read Wait
+			else
+				printf "${eeee}$monkey_result👈"
+			fi
+			sleep 0.5
 		done
 	fi
 
@@ -124,14 +146,12 @@ count_point() {
 	if [[ "$2" != "roulette" ]]; then
 		if [[ $(($num % 10)) == 0 ]]; then
 			ten_times_point=$(($ten_times_point + 5))
-			echo
 			echo -e "\e[35m$num個目ボーナス!\e[m"
 			echo
 		fi
 
 		if [[ $(($num % 10)) == 2 ]] && [[ $num != 2 ]]; then
 			bad_times_point=$(($bad_times_point + 6))
-			echo
 			echo -e "\e[35m残念、$num個目アンラッキー!\e[m"
 			echo
 		fi
@@ -140,8 +160,7 @@ count_point() {
 
 		if [[ "$first_check" == "" ]]; then
 			first_point=$(($first_point + 1))
-			echo
-			echo "FIRST TIME🎉 $slot_result 🎉"
+			echo "🎉 $slot_result 🎉"
 			echo
 		fi
 	fi
@@ -208,7 +227,11 @@ lucky_roulette() {
 	for y in {1..50}
 	do
 		lucky_roulette_item=${new_array[$(($RANDOM % ${#new_array[*]}))]}
-		printf "${aaaa}$lucky_roulette_item $lucky_roulette_item $lucky_roulette_item👈"
+		if [[ $y == 50 ]]; then
+			printf "${aaaa}$lucky_roulette_item $lucky_roulette_item $lucky_roulette_item👈\n"
+		else
+			printf "${aaaa}$lucky_roulette_item $lucky_roulette_item $lucky_roulette_item👈"
+		fi
 		sleep 0.1
 	done
 
@@ -227,7 +250,11 @@ unlucky_roulette() {
 	for y in {1..50}
 	do
 		unlucky_roulette_item=${bad_array[$(($RANDOM % ${#bad_array[*]}))]}
-		printf "${bbbb}$unlucky_roulette_item $unlucky_roulette_item $unlucky_roulette_item👈"
+		if [[ $y == 50 ]]; then
+			printf "${bbbb}$unlucky_roulette_item $unlucky_roulette_item $unlucky_roulette_item👈\n"
+		else
+			printf "${bbbb}$unlucky_roulette_item $unlucky_roulette_item $unlucky_roulette_item👈"
+		fi
 		sleep 0.1
 	done
 
@@ -245,4 +272,76 @@ spin_roulette() {
 	if [[ $((RANDOM%+101)) -gt 95 ]]; then
 		unlucky_roulette
 	fi
+}
+
+show_summary() {
+	source ./db/points.txt
+	source ./db/events.txt
+	echo
+    echo "mutch_count:$mutch_count"
+    echo "successive_point:$successive_point"
+    echo "first_point:$first_point"
+    echo "fever_point:$fever_point"
+    echo "lucky_point:$lucky_point"
+	echo "egg_point:$egg_point"
+    echo "ten_times_point:$ten_times_point"
+    echo "good_point:$good_point"
+	echo
+    echo "paid_coin:-$paid_coin"
+    echo "tomato_point:-$tomato_point"
+    echo "monkey_point:-$monkey_point"
+    echo "bad_times_point:$bad_times_point"
+    echo "bad_point:-$bad_point"
+	echo
+    echo "point:$point"
+	echo
+
+	if [[ ${eggs[0]} == "0" ]]; then
+		player0_egg=""
+	elif [[ ${eggs[0]} != "0" ]] && [[ ${eggs[0]} -lt "4" ]]; then
+		player0_egg=🥚
+	elif [[ ${eggs[0]} -gt "3" ]] && [[ ${eggs[0]} -lt "6" ]]; then
+		player0_egg=🐣
+	elif [[ ${eggs[0]} -gt "5" ]] && [[ ${eggs[0]} -lt "9" ]]; then
+		player0_egg=🐥
+	elif [[ ${eggs[0]} -gt "8" ]] && [[ ${eggs[0]} -lt "11" ]]; then
+		player0_egg=🐔
+	fi
+
+	if [[ ${eggs[1]} == "0" ]]; then
+		player1_egg=""
+	elif [[ ${eggs[1]} != "0" ]] && [[ ${eggs[1]} -lt "4" ]]; then
+		player1_egg=🥚
+	elif [[ ${eggs[1]} -gt "3" ]] && [[ ${eggs[1]} -lt "6" ]]; then
+		player1_egg=🐣
+	elif [[ ${eggs[1]} -gt "5" ]] && [[ ${eggs[1]} -lt "9" ]]; then
+		player1_egg=🐥
+	elif [[ ${eggs[1]} -gt "8" ]] && [[ ${eggs[1]} -lt "11" ]]; then
+		player1_egg=🐔
+	fi
+
+	echo "${players[0]}: ${player_points[0]} 😍${player_goods[0]} 🤢${player_bads[0]} $player0_egg"
+	echo "${players[1]}: ${player_points[1]} 😍${player_goods[1]} 🤢${player_bads[1]} $player1_egg"
+	echo
+	echo "lucky_item:$lucky_item"
+	echo "seasonal_item:$seasonal_item"
+}
+
+reset_slot() {
+	slot_count=1
+	mutch_count=0
+	successive_point=0
+	fever_point=0
+	first_point=0
+	lucky_point=0
+	tomato_point=0
+	monkey_point=0
+	ten_times_point=0
+	bad_times_point=0
+	good_point=0
+	bad_point=0
+    point_plus=0
+    point_minus=0
+	bad_apple="false"
+	ghost_flag="false"
 }

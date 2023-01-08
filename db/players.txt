@@ -1,3 +1,3 @@
 players=(player0 player1)
 player_goods=(🍞 🍞)
-player_bads=(🍺 🍖)
+player_bads=(🍺 🍺)
