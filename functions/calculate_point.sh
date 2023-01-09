@@ -42,6 +42,7 @@ insert_point_data() {
         if [[ ${players[$i]} == "$player" ]]; then 
             if [[ "$devil_flag" == true ]]; then
                 new_player_point+=($((${player_points[$i]} / 2)))
+                devil_flag="false"
             else
                 new_player_point+=($((${player_points[$i]} + $point)))
             fi

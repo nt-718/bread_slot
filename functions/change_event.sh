@@ -57,7 +57,7 @@ angel_event() {
 
 fever_time() {
     if [[ $fever_flag == true ]]; then
-        if [[ $((RANDOM%+101)) -gt 70 ]]; then
+        if [[ $((RANDOM%+101)) -gt 50 ]]; then
             fever_flag="false"
             echo 
             echo -e "\e[34mフィーバータイム終了です!!\e[m"

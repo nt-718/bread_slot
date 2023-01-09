@@ -9,12 +9,17 @@ source ./db/game_history.txt
 
 change_player() {
 
-	if [[ "$1" == "${players[0]}" ]]; then
-		player=${players[1]}
-	else
-		player=${players[0]}
-	fi
-	player="$player"
+	for i in `seq 0 $((${#players[@]} - 1))`
+    do
+        if [[ "${players[$i]}" == "$player" ]]; then
+			if [[ "$i" == $((${#players[@]} - 1)) ]]; then
+				player="${players[0]}"
+			else
+				player="${players[$(($i + 1))]}"
+			fi
+			break
+        fi
+    done
 }
 
 insert_prev_item() {

@@ -275,63 +275,6 @@ spin_roulette() {
 	fi
 }
 
-show_summary() {
-	source ./db/points.txt
-	source ./db/events.txt
-	source ./db/game_history.txt
-
-	echo
-    echo "game_count=$game_count"
-	echo
-	echo "mutch_count:$mutch_count"
-    echo "successive_point:$successive_point"
-    echo "first_point:$first_point"
-    echo "fever_point:$fever_point"
-    echo "lucky_point:$lucky_point"
-	echo "egg_point:$egg_point"
-    echo "ten_times_point:$ten_times_point"
-    echo "good_point:$good_point"
-	echo
-    echo "paid_coin:-$paid_coin"
-    echo "tomato_point:-$tomato_point"
-    echo "monkey_point:-$monkey_point"
-    echo "bad_times_point:-$bad_times_point"
-    echo "bad_point:-$bad_point"
-	echo
-    echo "point:$point"
-	echo
-
-	if [[ ${eggs[0]} == "0" ]]; then
-		player0_egg=""
-	elif [[ ${eggs[0]} != "0" ]] && [[ ${eggs[0]} -lt "4" ]]; then
-		player0_egg=🥚
-	elif [[ ${eggs[0]} -gt "3" ]] && [[ ${eggs[0]} -lt "6" ]]; then
-		player0_egg=🐣
-	elif [[ ${eggs[0]} -gt "5" ]] && [[ ${eggs[0]} -lt "9" ]]; then
-		player0_egg=🐥
-	elif [[ ${eggs[0]} -gt "8" ]] && [[ ${eggs[0]} -lt "11" ]]; then
-		player0_egg=🐔
-	fi
-
-	if [[ ${eggs[1]} == "0" ]]; then
-		player1_egg=""
-	elif [[ ${eggs[1]} != "0" ]] && [[ ${eggs[1]} -lt "4" ]]; then
-		player1_egg=🥚
-	elif [[ ${eggs[1]} -gt "3" ]] && [[ ${eggs[1]} -lt "6" ]]; then
-		player1_egg=🐣
-	elif [[ ${eggs[1]} -gt "5" ]] && [[ ${eggs[1]} -lt "9" ]]; then
-		player1_egg=🐥
-	elif [[ ${eggs[1]} -gt "8" ]] && [[ ${eggs[1]} -lt "11" ]]; then
-		player1_egg=🐔
-	fi
-
-	echo "${players[0]}: ${player_points[0]} 😍${player_goods[0]} 🤢${player_bads[0]} $player0_egg"
-	echo "${players[1]}: ${player_points[1]} 😍${player_goods[1]} 🤢${player_bads[1]} $player1_egg"
-	echo
-	echo "lucky_item:$lucky_item"
-	echo "seasonal_item:$seasonal_item"
-}
-
 reset_slot() {
 	slot_count=1
 	mutch_count=0
