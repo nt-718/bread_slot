@@ -22,7 +22,12 @@ source ./db/items.txt
 reset_slot
 
 player=${players[0]}
-read -p "何コイン使いますか? " paid_coin
+if [[ "$1" == "auto" ]]; then
+	paid_coin=1
+	echo "Auto mode"
+else
+	read -p "何コイン使いますか? " paid_coin
+fi
 
 while true
 do
@@ -45,7 +50,6 @@ do
 		else
 			change_preference
 		fi
-
 	elif [[ -z $paid_coin ]]; then
 		paid_coin=1
 	elif [[ $paid_coin -gt 5 ]]; then
@@ -96,7 +100,7 @@ do
 			if [[ $y == 50 ]]; then
 				printf "${dddd}$random_pay_number👈\n"
 				echo "$random_pay_numberコイン使用されました。"
-				read Wait
+				sleep 1
 				paid_coin=$random_pay_number
 			else
 				printf "${dddd}$random_pay_number👈"
@@ -104,7 +108,12 @@ do
 			sleep 0.1
 		done
 	else
-		read -p "何コイン使いますか? " paid_coin
+		if [[ "$1" == "auto" ]]; then
+			paid_coin=1
+			sleep 2
+		else
+			read -p "何コイン使いますか? " paid_coin
+		fi
 	fi
 done
 

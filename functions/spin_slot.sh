@@ -113,7 +113,7 @@ count_point() {
 			monkey_result=${monkey_array[$(($RANDOM % ${#monkey_array[*]}))]}
 			if [[ $y == 10 ]]; then
 				printf "${eeee}$monkey_result👈\n"
-				read Wait
+				sleep 0.5
 			else
 				printf "${eeee}$monkey_result👈"
 			fi
@@ -221,8 +221,7 @@ lucky_roulette() {
 	
 	echo 
 	echo -e "\e[34m👼ラッキールーレット👼\e[m"
-	read -p "$playerさんはEnterを押してルーレットを回しください。"
-	
+	sleep 1	
 	aaaa='\r👉'	
 	new_array=(👼 🐵 👼 🐵 ${item_array[@]} ${item_array[@]} ${item_array[@]})
 	for y in {1..50}
@@ -244,7 +243,8 @@ lucky_roulette() {
 unlucky_roulette() {
 	echo 
 	echo -e "\e[31m👿アンラッキールーレット👿\e[m"
-	read -p "$playerさんはEnterを押してルーレットを回しください。"
+	sleep 1	
+
     bad_array=(👿 🍅 🐵 ${player_bads[@]} 🍅 🐵 ${player_bads[@]} 🍅 🐵 ${player_bads[@]})
 	bbbb='\r👉'
 

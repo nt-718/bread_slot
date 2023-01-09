@@ -9,15 +9,17 @@ show_summary() {
 	echo
     echo "ゲーム回数：$game_count"
     echo
+	echo "$player"
+	echo
 	echo "+++++++++++++++++++++++"
-	echo "揃った数：$mutch_count"
-    echo "連続ポイント：$successive_point"
-    echo "初揃いポイント：$first_point"
-    echo "フィーバーポイント：$fever_point"
-    echo "ラッキーポイント：$lucky_point"
-	echo "ニワトリポイント：$egg_point"
-    echo "%10=0ボーナス：$ten_times_point"
-    echo "好きなものポイント：$good_point"
+	echo "揃った数：+$mutch_count"
+    echo "連続ポイント：+$successive_point"
+    echo "初揃いポイント：+$first_point"
+    echo "フィーバーポイント：+$fever_point"
+    echo "ラッキーポイント：+$lucky_point"
+	echo "ニワトリポイント：+$egg_point"
+    echo "%10=0ボーナス：+$ten_times_point"
+    echo "好きなものポイント：+$good_point"
 	echo "+++++++++++++++++++++++"
 	echo
     echo "-----------------------"
