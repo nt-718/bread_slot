@@ -11,9 +11,9 @@ source ./functions/game_setting.sh
 source ./functions/spin_slot.sh
 source ./functions/game_data.sh
 source ./functions/view_game_info.sh
+source ./functions/gpt_advisor.sh
 
 # main function
-
 start_game
 
 source ./db/players.txt
@@ -91,6 +91,8 @@ do
 	
 	inflation_time
 
+	abnormal_events
+
 	echo
 	echo -e "\e[35m$playerのターンです!\e[m"
 	random_pay
@@ -114,7 +116,6 @@ do
 		done
 	else
 		if [[ "$1" == "auto" ]]; then
-			specify_count
 			paid_coin=1
 			sleep 2
 		else

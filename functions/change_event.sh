@@ -91,6 +91,40 @@ inflation_time() {
 	fi
 }
 
+abnormal_events() {
+
+	if [[ $((RANDOM%+101)) -gt 95 ]]; then
+        echo -e "\e[31m👿天変地異が起こった👿\e[m"
+        sleep 1	
+
+        bad_array=(👿 😈)
+        bbbb='\r👉'
+
+        for y in {1..50}
+        do
+            unlucky_roulette_item=${bad_array[$(($RANDOM % ${#bad_array[*]}))]}
+            if [[ $y == 50 ]]; then
+                printf "${bbbb}$unlucky_roulette_item $unlucky_roulette_item $unlucky_roulette_item👈\n"
+            else
+                printf "${bbbb}$unlucky_roulette_item $unlucky_roulette_item $unlucky_roulette_item👈"
+            fi
+            sleep 0.1
+        done
+        
+        if [[ $unlucky_roulette_item == 😈 ]]; then
+            echo ""
+            echo "😈は機嫌がよかったみたいだ"
+            echo "何とか乗り切った😵"
+        else
+            echo "👿が怒っている！"
+            echo "ポイントが半分になった😱"
+            res="$unlucky_roulette_item $unlucky_roulette_item $unlucky_roulette_item"
+            count_point "$res" "roulette"
+            echo
+        fi
+	fi
+}
+
 tomato_festival() {
     if [[ $tomato_fes_flag == "true" ]]; then
         tomato_fes_flag="false"

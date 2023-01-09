@@ -119,6 +119,19 @@ count_point() {
 			fi
 			sleep 0.5
 		done
+		if [[ $monkey_result == "🙈" ]]; then
+			echo ""
+			echo "見ていない、何も見ていない。"
+			echo "現実逃避したが-10ポイント"
+		elif [[ $monkey_result == "🙉" ]]; then
+			echo ""
+			echo "聞いてない、何も聞いていない。"
+			echo "現実逃避したが-10ポイント"
+		else
+			echo ""
+			echo "言ってない、何も言っていない。"
+			echo "現実逃避したが-10ポイント"
+		fi
 	fi
 
 	if [[ "$slot_result" == "🥚 🥚 🥚" ]]; then

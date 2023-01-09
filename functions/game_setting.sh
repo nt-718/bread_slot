@@ -7,6 +7,7 @@ source ./db/points.txt
 source ./db/events.txt
 source ./db/game_history.txt
 source ./functions/selector.sh
+source ./functions/gpt_advisor.sh
 
 start_game() {
 
@@ -20,6 +21,7 @@ start_game() {
 
     else
         player_names=()
+        get_food
 
         echo "プレイ人数を入力してください"
         read -p ">>" how_many_players
@@ -36,7 +38,9 @@ start_game() {
             read -p ">>" player_name
 
             if [[ -z "$player_name" ]]; then
-                player_names+=("player${i}")
+                new_name="$(get_name_by_gpt)"
+                player_names+=("$new_name")
+                # player_names+=("player${i}")
             else
                 player_names+=($player_name)
             fi
@@ -182,8 +186,4 @@ change_preference() {
     paid_coin=0
     change_preference_point=5
 
-}
-
-specify_count() {
-    history_count=$(cat ./db/all_pair_history.txt | grep : | wc -l)
 }
