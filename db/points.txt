@@ -1,1 +1,1 @@
-player_points=(20 13 4)
+player_points=(43 3)

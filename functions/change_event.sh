@@ -81,6 +81,16 @@ free_time() {
 	fi
 }
 
+inflation_time() {
+
+	if [[ $((RANDOM%+101)) -gt 80 ]]; then
+		inflation_flag="true"
+		echo
+		echo -e "\e[34mインフレ中です!!\e[m"
+		echo -e "\e[34m支払コインが2倍になります\e[m"
+	fi
+}
+
 tomato_festival() {
     if [[ $tomato_fes_flag == "true" ]]; then
         tomato_fes_flag="false"

@@ -292,4 +292,5 @@ reset_slot() {
     point_minus=0
 	bad_apple="false"
 	ghost_flag="false"
+	change_preference_point=0
 }

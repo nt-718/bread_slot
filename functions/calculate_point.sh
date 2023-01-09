@@ -13,7 +13,12 @@ calculate_point() {
     source ./db/events.txt
     if [[ "$free_flag" == true ]]; then
         paid_coin=0
-        free_flag=false
+        free_flag="false"
+    fi
+    
+    if [[ "$inflation_flag" == true ]]; then
+        paid_coin=$(($paid_coin * 2))
+        inflation_flag="false"
     fi
 
     for i in `seq 0 $((${#players[@]} - 1))`
@@ -24,7 +29,7 @@ calculate_point() {
     done
 
     point_plus=$(( $mutch_count + $successive_point + $fever_point + $lucky_point + $good_point + $ten_times_point + $first_point + $egg_point))
-    point_minus=$(($paid_coin + $tomato_point + $monkey_point + $bad_point + $bad_times_point))
+    point_minus=$(($paid_coin + $tomato_point + $monkey_point + $bad_point + $bad_times_point + $change_preference_point))
     if [[ $bad_apple == true ]]; then
         point_plus=0
     fi

@@ -35,7 +35,7 @@ do
 		break
 	elif [[ "$paid_coin" == "change" ]]; then
 		echo "好みを変更したターンはスロットを回すことができません。"
-		read -p "好みを変更しますか？ y/N: " change_pref
+		read -p "5コインで好みを変更しますか？ y/N: " change_pref
     	if [ "$change_pref" == "N" -o "$change_pref" == "n" ]; then
 			read -p "何コイン使いますか? " paid_coin
 			if [[ -z $paid_coin ]]; then
@@ -86,7 +86,10 @@ do
 	if [[ "$game_count" == "$(($game_set + 1))" ]]; then
 		finish_game
 	fi
+
 	free_time
+	
+	inflation_time
 
 	echo
 	echo -e "\e[35m$playerのターンです!\e[m"

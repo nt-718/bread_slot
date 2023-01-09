@@ -1,2 +1,2 @@
-game_count=3
-prev_item=🍞
+game_count=21
+prev_item=🍺

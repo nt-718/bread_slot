@@ -167,8 +167,8 @@ change_preference() {
     for i in `seq 0 $((${#players[@]} - 1))`
     do
         if [[ ${players[$i]} == "$player" ]]; then 
-            new_player_goods+=($new_player_bad)
-            new_player_bads+=($new_player_good)
+            new_player_goods+=($new_player_good)
+            new_player_bads+=($new_player_bad)
         else
             new_player_goods+=(${player_goods[$i]})
             new_player_bads+=(${player_bads[$i]})
@@ -180,6 +180,7 @@ change_preference() {
     echo "player_bads=(${new_player_bads[@]})" >> ./db/players.txt
 
     paid_coin=0
+    change_preference_point=5
 
 }
 
