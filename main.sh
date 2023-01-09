@@ -83,8 +83,10 @@ do
 		echo -e "\e[34mフィーバー中です!!\e[m"
 	fi
 	
+	if [[ "$game_count" == "$(($game_set + 1))" ]]; then
+		finish_game
+	fi
 	free_time
-	finish_game
 
 	echo
 	echo -e "\e[35m$playerのターンです!\e[m"
@@ -109,6 +111,7 @@ do
 		done
 	else
 		if [[ "$1" == "auto" ]]; then
+			specify_count
 			paid_coin=1
 			sleep 2
 		else

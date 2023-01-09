@@ -122,22 +122,30 @@ start_game() {
 
 finish_game() {
     source ./db/points.txt
-    if [[ "$game_count" == "$(($game_set + 1))" ]]; then
-		echo "Finish!!"
-		echo
-		
-		echo "勝者は・・・"
-		read Wait
+    echo "Finish!!"
+    echo
+    
+    echo "勝者は・・・"
+    read Wait
 
-		if [[ ${player_points[0]} < ${player_points[1]} ]]; then
-			echo "👏 Winner 🎉${players[1]}🎉 👏"
-		elif [[ ${player_points[0]} > ${player_points[1]} ]]; then
-			echo "👏 Winner 🎉${players[0]}🎉 👏"
-		else
-			echo "Draw"
+    most_point=`echo "(15 15 13)" | sort -nr | head -n 1`
+
+    max=${player_points[0]}
+    for n in "${player_points[@]}"; do
+        ((n > max)) && max=$n
+    done
+
+    for i in `seq 0 $((${#player_points[@]} - 1))`
+	do
+		if [[ ${player_points[$i]} == "$max" ]]; then
+			player_num=$i
+            break
 		fi
-        exit
-	fi
+	done
+
+    echo "👏 Winner 🎉${players[$player_num]}🎉 👏"
+    
+    exit
 }
 
 change_preference() {
@@ -173,4 +181,8 @@ change_preference() {
 
     paid_coin=0
 
+}
+
+specify_count() {
+    history_count=$(cat ./db/all_pair_history.txt | grep : | wc -l)
 }

@@ -1,6 +1,11 @@
 HISTORY
 
-3: player0:🍖 🍖 🍖
-2: player1:🥖 🥖 🥖
+8: player2:🍞 🍞 🍞
+7: player2:🍖 🍖 🍖
+6: player1:🍮 🍮 🍮
+5: player1:🍎 🍎 🍎
+4: player0:🍮 🍮 🍮
+3: player0:🍮 🍮 🍮
+2: player0:🥖 🥖 🥖
 1: player0:🍮 🍮 🍮
 
