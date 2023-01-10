@@ -116,7 +116,8 @@ do
 		done
 	else
 		if [[ "$1" == "auto" ]]; then
-			paid_coin=1
+			paid_coin=$(get_num)
+			echo "$paid_coinコイン支払われました。"
 			sleep 2
 		else
 			read -p "何コイン使いますか? " paid_coin

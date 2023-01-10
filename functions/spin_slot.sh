@@ -307,3 +307,63 @@ reset_slot() {
 	ghost_flag="false"
 	change_preference_point=0
 }
+
+
+get_num() {
+
+	paid_coin=1
+
+	for i in `seq 0 $((${#players[@]} - 1))`
+    do
+        if [[ "${players[$i]}" == "$player" ]]; then
+			lucky_item_check=${player_goods[$i]}
+			break
+        fi
+    done
+
+	count=$(cat ./db/all_pair_history.txt | grep : | wc -l)
+
+	if [[ $inflation_flag == true ]]; then
+		paid_coin=1
+	fi
+
+	if [[ $free_flag == true ]]; then
+		paid_coin=5
+	fi
+    
+    if [[ $(($count % 10)) -lt 5 ]]; then
+		if [[ $lucky_item_check == $seasonal_item ]]; then
+			paid_coin=$(($paid_coin + 2))
+		fi
+		paid_coin=$paid_coin
+
+    elif [[ $(($count % 10)) == 9 ]]; then
+		paid_coin=1
+
+    elif [[ $(($count % 10)) == 8 ]]; then
+		paid_coin=1
+
+    elif [[ $(($count % 10)) == 7 ]]; then
+		paid_coin=2
+
+    elif [[ $(($count % 10)) == 6 ]]; then
+		paid_coin=3
+    fi
+
+    if [[ $angel_flag == true ]]; then
+		paid_coin=5
+	elif [[ $tomato_fes_flag == true ]] && [[ $lucky_item == "🍅" ]]; then
+		paid_coin=5
+	elif [[ $tomato_fes_flag == true ]]; then
+		paid_coin=1
+	fi
+
+	if [[ $paid_coin -gt 5 ]]; then
+		paid_coin=5
+	elif [[ $paid_coin -lt 1 ]]; then
+		paid_coin=1
+	fi
+
+	echo $paid_coin
+
+}

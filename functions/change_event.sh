@@ -243,7 +243,7 @@ egg_bonus() {
 
 random_pay() {
     
-    if [[ $((RANDOM%+101)) -gt 85 ]]; then
+    if [[ $((RANDOM%+101)) -gt 90 ]]; then
         ghost_flag="true"
         echo
         echo "👻 幽霊のいたずら 👻"

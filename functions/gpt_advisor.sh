@@ -20,7 +20,7 @@ get_name_by_gpt() {
 
 get_food() {
 
-    prompt_text="🍎と🍏と🥚と🍅以外で、食べ物の絵文字を7つ、食べ物+空白の形式で横並びに出力してください。"
+    prompt_text="🍎と🍏と🥚と🍅以外で、食べ物もしくは飲み物の絵文字を7つ、食べ物+空白の形式で横並びに出力してください。"
     request_data="{\"model\": \"text-davinci-003\", \"prompt\": \"$prompt_text\", \"temperature\": 1, \"max_tokens\": 1024}"
     food_count=0
 

@@ -38,8 +38,10 @@ start_game() {
             read -p ">>" player_name
 
             if [[ -z "$player_name" ]]; then
+                echo "AIが考えています・・・"
                 new_name="$(get_name_by_gpt)"
                 player_names+=("$new_name")
+                echo "$new_nameに決まりました！！"
                 # player_names+=("player${i}")
             else
                 player_names+=($player_name)
