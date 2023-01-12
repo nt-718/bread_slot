@@ -22,6 +22,7 @@ spin_slot() {
 	player_num=`get_index $player`
 
 	if [ "$first_value" == "$second_value" -a "$first_value" == "$third_value" ]; then
+		printf '\a'
 		if [[ "$tomato_fes_flag" == true ]]; then
 			echo
 			if [[ "$slot" == "🍅 🍅 🍅" ]]; then
@@ -196,7 +197,7 @@ count_point() {
 			echo
 			echo "おや、🍎の様子が・・・"
 			cccc='\r👉'
-			apples=("🍎" "🍏")
+			apples=("🍎" "🍏" "🍎")
 
 			for y in {1..50}
 			do
@@ -230,48 +231,88 @@ get_index() {
 	echo $player_num
 }
 
+stop_roulette() {
+	read -t 0.05 -s -n 1 c
+	case $c in
+	s )
+		input_key="s";;
+	* )
+		input_key="";;
+	esac
+}
+
 lucky_roulette() {
-	
-	echo 
-	echo -e "\e[34m👼ラッキールーレット👼\e[m"
 	sleep 1	
 	aaaa='\r👉'	
-	new_array=(👼 🐵 👼 🐵 ${item_array[@]} ${item_array[@]} ${item_array[@]})
-	for y in {1..50}
-	do
-		lucky_roulette_item=${new_array[$(($RANDOM % ${#new_array[*]}))]}
-		if [[ $y == 50 ]]; then
-			printf "${aaaa}$lucky_roulette_item $lucky_roulette_item $lucky_roulette_item👈\n"
-		else
+	new_array=(👼 🐵 👼 🐵 ${item_array[@]} ${item_array[@]} ${item_array[@]})	
+	echo 
+	echo -e "\e[34m👼ラッキールーレット👼\e[m"
+	if [[ -z "`echo ${bot_array[@]} | grep "$player"`" ]]; then
+		echo -e "\e[34m"Sキーを押してください。"\e[m"
+		while :
+		do
+			lucky_roulette_item=${new_array[$(($RANDOM % ${#new_array[*]}))]}
 			printf "${aaaa}$lucky_roulette_item $lucky_roulette_item $lucky_roulette_item👈"
-		fi
-		sleep 0.1
-	done
+			stop_roulette
+			if [[ "$input_key" == "s" ]]; then
+				break
+			fi
 
+			sleep 0.05
+		done
+	else
+		for y in {1..50}
+		do
+			lucky_roulette_item=${new_array[$(($RANDOM % ${#new_array[*]}))]}
+			if [[ $y == 50 ]]; then
+				printf "${aaaa}$lucky_roulette_item $lucky_roulette_item $lucky_roulette_item👈\n"
+			else
+				printf "${aaaa}$lucky_roulette_item $lucky_roulette_item $lucky_roulette_item👈"
+			fi
+			sleep 0.1
+		done
+	fi
+
+	input_key=""
 	res="$lucky_roulette_item $lucky_roulette_item $lucky_roulette_item"
 	count_point "$res" "roulette"
 	echo	
 }
 
 unlucky_roulette() {
+	sleep 1	
+    bad_array=(👿 🍅 🐵 ${player_bads[@]} 🍅 🐵 ${player_bads[@]} 🍅 🐵 ${player_bads[@]})
+	bbbb='\r👉'	
 	echo 
 	echo -e "\e[31m👿アンラッキールーレット👿\e[m"
-	sleep 1	
 
-    bad_array=(👿 🍅 🐵 ${player_bads[@]} 🍅 🐵 ${player_bads[@]} 🍅 🐵 ${player_bads[@]})
-	bbbb='\r👉'
-
-	for y in {1..50}
-	do
-		unlucky_roulette_item=${bad_array[$(($RANDOM % ${#bad_array[*]}))]}
-		if [[ $y == 50 ]]; then
-			printf "${bbbb}$unlucky_roulette_item $unlucky_roulette_item $unlucky_roulette_item👈\n"
-		else
+	if [[ -z "`echo ${bot_array[@]} | grep "$player"`" ]]; then
+		echo -e "\e[34m"Sキーを押してください。"\e[m"
+		while :
+		do
+			unlucky_roulette_item=${bad_array[$(($RANDOM % ${#bad_array[*]}))]}
 			printf "${bbbb}$unlucky_roulette_item $unlucky_roulette_item $unlucky_roulette_item👈"
-		fi
-		sleep 0.1
-	done
+			stop_roulette
+			if [[ "$input_key" == "s" ]]; then
+				break
+			fi
 
+			sleep 0.05
+		done
+	else
+		for y in {1..50}
+		do
+			unlucky_roulette_item=${bad_array[$(($RANDOM % ${#bad_array[*]}))]}
+			if [[ $y == 50 ]]; then
+				printf "${bbbb}$unlucky_roulette_item $unlucky_roulette_item $unlucky_roulette_item👈\n"
+			else
+				printf "${bbbb}$unlucky_roulette_item $unlucky_roulette_item $unlucky_roulette_item👈"
+			fi
+			sleep 0.1
+		done
+	fi
+
+	input_key=""
 	res="$unlucky_roulette_item $unlucky_roulette_item $unlucky_roulette_item"
 	count_point "$res" "roulette"
 	echo
@@ -279,7 +320,7 @@ unlucky_roulette() {
 }
 
 spin_roulette() {
-	if [[ $((RANDOM%+101)) -gt 80 ]]; then
+	if [[ $((RANDOM%+101)) -gt 90 ]]; then
 		lucky_roulette
 	fi
 
@@ -331,7 +372,10 @@ get_num() {
 		paid_coin=5
 	fi
     
-    if [[ $(($count % 10)) -lt 5 ]]; then
+    if [[ $(($count % 10)) == 1 ]] && [[ $(($count % 10)) == 2 ]]; then
+		paid_coin=$1
+
+	elif [[ $(($count % 10)) -lt 5 ]]; then
 		if [[ $lucky_item_check == $seasonal_item ]]; then
 			paid_coin=$(($paid_coin + 2))
 		fi
@@ -341,13 +385,13 @@ get_num() {
 		paid_coin=1
 
     elif [[ $(($count % 10)) == 8 ]]; then
-		paid_coin=1
-
-    elif [[ $(($count % 10)) == 7 ]]; then
 		paid_coin=2
 
-    elif [[ $(($count % 10)) == 6 ]]; then
+    elif [[ $(($count % 10)) == 7 ]]; then
 		paid_coin=3
+
+    elif [[ $(($count % 10)) == 6 ]]; then
+		paid_coin=4
     fi
 
     if [[ $angel_flag == true ]]; then
@@ -366,4 +410,44 @@ get_num() {
 
 	echo $paid_coin
 
+}
+
+set_spin_times() {
+	printf "何コイン使いますか?:>> "
+	return_code='\r何コイン使いますか?:>> '
+	while :
+	do
+		case $(key_input_test) in
+		enter)
+			selected_num=$selected_num
+			printf "${return_code}""$selected_num\n"
+			paid_coin=$selected_num
+			break;;
+		up)
+			selected_num=$(($selected_num + 1 ))
+			[[ $selected_num -gt 5 ]] && selected_num=1
+			
+			printf "${return_code}""$selected_num";;
+		down)
+			selected_num=$(($selected_num - 1 ))
+			[[ $selected_num -lt 1 ]] && selected_num=5
+			
+			printf "${return_code}""$selected_num";;
+		esac
+	done
+}
+
+
+key_input_test() {
+	ESC=$(printf '%b' "\033")
+	read -s -n3 key 2>/dev/null >&2
+	if [[ $key = $ESC[A ]]; then
+		echo "up"
+	fi
+	if [[ $key = $ESC[B ]]; then
+		echo "down"
+	fi
+	if [[ $key = ""  ]]; then
+		echo "enter"
+	fi
 }

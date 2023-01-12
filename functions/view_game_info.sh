@@ -33,6 +33,7 @@ show_summary() {
     echo "ポイント：$point"
 	echo
 	player_eggs=()
+	rank=()
 	for i in `seq 0 $((${#players[@]} - 1))`
     do
 		if [[ ${eggs[$i]} == "0" ]]; then
@@ -45,8 +46,15 @@ show_summary() {
 			player_eggs+=(🐥)
 		elif [[ ${eggs[$i]} -gt "7" ]] && [[ ${eggs[$i]} -lt "10" ]]; then
 			player_eggs+=(🐔)
-		fi	
-		echo "${players[$i]}: ${player_points[$i]} 😍${player_goods[$i]} 🤢${player_bads[$i]} ${player_eggs[$i]}"
+		fi
+		rank+=("${players[$i]}: ${player_points[$i]} 😍${player_goods[$i]} 🤢${player_bads[$i]} ${player_eggs[$i]}")
+	done
+
+	array=("$(for v in "${rank[@]}"; do echo "$v" ; done | sort -nr -k 2)")
+	
+	for i in `seq 0 $((${#array[@]} - 1))`
+    do
+		echo "${array[$i]}"
 	done
 
 	echo

@@ -73,7 +73,7 @@ fever_time() {
 
 free_time() {
 
-	if [[ $((RANDOM%+101)) -gt 80 ]]; then
+	if [[ $((RANDOM%+101)) -gt 80 ]] && [[ "$inflation_flag" == "false" ]]; then
 		free_flag="true"
 		echo
 		echo "💸フリータイムです！！💸"
@@ -83,7 +83,7 @@ free_time() {
 
 inflation_time() {
 
-	if [[ $((RANDOM%+101)) -gt 80 ]]; then
+	if [[ $((RANDOM%+101)) -gt 80 ]] && [[ "$free_flag" == "false" ]]; then
 		inflation_flag="true"
 		echo
 		echo -e "\e[34mインフレ中です!!\e[m"
@@ -93,7 +93,7 @@ inflation_time() {
 
 abnormal_events() {
 
-	if [[ $((RANDOM%+101)) -gt 95 ]]; then
+	if [[ $((RANDOM%+101)) -gt 99 ]]; then
         echo -e "\e[31m👿天変地異が起こった👿\e[m"
         sleep 1	
 

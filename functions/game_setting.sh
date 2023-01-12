@@ -23,10 +23,14 @@ start_game() {
         player_names=()
         get_food
 
-        echo "プレイ人数を入力してください"
-        read -p ">>" how_many_players
+        set_player_num
 
         if [[ -z "$how_many_players" ]]; then
+            how_many_players=2
+            echo "2人プレイに設定しました"
+        elif [[ "$how_many_players" =~ ^[0-9]+$ ]]; then
+            how_many_players=$how_many_players
+        else
             how_many_players=2
             echo "2人プレイに設定しました"
         fi
@@ -35,17 +39,26 @@ start_game() {
         do
             echo "プレイヤー${i}の名前を入力してください"
 
-            read -p ">>" player_name
+            read -p ">>" player_name bot
 
-            if [[ -z "$player_name" ]]; then
+            if [[ -z "$player_name" ]] && [[ -z "$bot" ]]; then
                 echo "AIが考えています・・・"
-                new_name="$(get_name_by_gpt)"
-                player_names+=("$new_name")
-                echo "$new_nameに決まりました！！"
-                # player_names+=("player${i}")
+                player_name="$(get_name_by_gpt)"
+                player_names+=("$player_name")
+                echo "$player_nameに決まりました！！"
+            elif [[ "$player_name" == "bot" ]]; then
+                echo "AIが考えています・・・"
+                player_name="$(get_name_by_gpt)"
+                player_names+=("$player_name")
+                echo "$player_nameに決まりました！！"
+                bot_array+=("$player_name")
+            elif [[ "$bot" == "bot" ]]; then
+                bot_array+=("$player_name")
             else
                 player_names+=($player_name)
             fi
+
+            
         done
 
         player_names=(${player_names[@]})
@@ -134,8 +147,6 @@ finish_game() {
     echo "勝者は・・・"
     read Wait
 
-    most_point=`echo "(15 15 13)" | sort -nr | head -n 1`
-
     max=${player_points[0]}
     for n in "${player_points[@]}"; do
         ((n > max)) && max=$n
@@ -149,8 +160,23 @@ finish_game() {
 		fi
 	done
 
-    echo "👏 Winner 🎉${players[$player_num]}🎉 👏"
+    end_hour=`date +"%-H"`
+    end_minute=`date +"%-M"`
+
+    if [ $end_minute -lt $start_minute ]; then
+        hour=$((end_hour-start_hour -1))
+        minute=$((end_minute-start_minute +60))
+    else
+        hour=$((end_hour-start_hour))
+        minute=$((end_minute-start_minute))
+    fi
     
+    echo "👏 Winner 🎉${players[$player_num]}🎉 👏"
+    echo "" >> ./db/game_info.txt
+    echo "👏 Winner 🎉${players[$player_num]}🎉 👏" >> ./db/game_info.txt
+
+    echo "$hour hours and $minute minutes has passed!"
+    echo "Good Game!!"
     exit
 }
 
@@ -188,4 +214,42 @@ change_preference() {
     paid_coin=0
     change_preference_point=5
 
+}
+
+set_player_num() {
+    printf "プレイヤー人数を入力してください。:>> "
+	return_code='\rプレイヤー人数を入力してください。:>> '
+	while :
+	do
+		case $(key_input_test) in
+		enter)
+			selected_num=$selected_num
+			printf "${return_code}""$selected_num\n"
+			how_many_players=$selected_num
+			break;;
+		up)
+			selected_num=$(($selected_num + 1 ))
+			[[ $selected_num -gt 10 ]] && selected_num=1
+			printf "${return_code}""$selected_num";;
+		down)
+			selected_num=$(($selected_num - 1 ))
+			[[ $selected_num -lt 1 ]] && selected_num=1
+			
+			printf "${return_code}""$selected_num";;
+		esac
+	done
+}
+
+key_input_test() {
+	ESC=$(printf '%b' "\033")
+	read -s -n3 key 2>/dev/null >&2
+	if [[ $key = $ESC[A ]]; then
+		echo "up"
+	fi
+	if [[ $key = $ESC[B ]]; then
+		echo "down"
+	fi
+	if [[ $key = ""  ]]; then
+		echo "enter"
+	fi
 }

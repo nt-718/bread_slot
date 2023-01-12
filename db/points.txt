@@ -1,1 +1,1 @@
-player_points=(0 9 6 11)
+player_points=(10 10)

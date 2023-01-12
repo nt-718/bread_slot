@@ -14,7 +14,10 @@ source ./functions/view_game_info.sh
 source ./functions/gpt_advisor.sh
 
 # main function
+
 start_game
+start_hour=`date +"%-H"`
+start_minute=`date +"%-M"`
 
 source ./db/players.txt
 source ./db/items.txt
@@ -22,11 +25,11 @@ source ./db/items.txt
 reset_slot
 
 player=${players[0]}
-if [[ "$1" == "auto" ]]; then
+if [[ `echo ${bot_array[@]} | grep "$player"` ]]; then
 	paid_coin=1
 	echo "Auto mode"
 else
-	read -p "何コイン使いますか? " paid_coin
+	set_spin_times
 fi
 
 while true
@@ -37,7 +40,7 @@ do
 		echo "好みを変更したターンはスロットを回すことができません。"
 		read -p "5コインで好みを変更しますか？ y/N: " change_pref
     	if [ "$change_pref" == "N" -o "$change_pref" == "n" ]; then
-			read -p "何コイン使いますか? " paid_coin
+			set_spin_times
 			if [[ -z $paid_coin ]]; then
 				paid_coin=1
 			elif [[ $paid_coin -gt 5 ]]; then
@@ -64,7 +67,7 @@ do
 	for i in `seq 1 $spin_times`;
 	do
 		spin_slot
-		sleep 0.07
+		sleep 0.05
 	done
 
 	spin_roulette
@@ -115,14 +118,12 @@ do
 			sleep 0.1
 		done
 	else
-		if [[ "$1" == "auto" ]]; then
+		if [[ `echo ${bot_array[@]} | grep "$player"` ]]; then
 			paid_coin=$(get_num)
 			echo "$paid_coinコイン支払われました。"
-			sleep 2
+			sleep 3
 		else
-			read -p "何コイン使いますか? " paid_coin
+			set_spin_times
 		fi
 	fi
 done
-
-# =================================================

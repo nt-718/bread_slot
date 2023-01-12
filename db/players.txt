@@ -1,3 +1,3 @@
-players=(いろどりんご※参考までに、いろどりんご＝錦糸町 ありがとさん いかりや きんぎょ)
-player_goods=(🍞 🍻 🍰 🍻)
-player_bads=(🍜 🥞 🍻 🥞)
+players=(パンダオオカミ オンパレード)
+player_goods=(🍞 🍞)
+player_bads=(🍷 🍰)
