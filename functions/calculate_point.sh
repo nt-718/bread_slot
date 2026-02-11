@@ -1,6 +1,5 @@
 #!/bin/bash
 
-shopt -s extglob lastpipe
 source ./db/players.txt
 source ./db/items.txt
 source ./db/points.txt
